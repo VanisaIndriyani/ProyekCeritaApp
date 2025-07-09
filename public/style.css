@@ -1,0 +1,293 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #4f8cff 0%, #a259ff 100%);
+    margin: 0;
+    min-height: 100vh;
+    color: #fff;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 3vw 1rem 3vw;
+    background: rgba(30, 34, 90, 0.8);
+    box-shadow: 0 2px 8px rgba(80,0,120,0.08);
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+    color: #fff;
+}
+
+#openModalBtn {
+    background: linear-gradient(90deg, #4f8cff, #a259ff);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 0.7em 1.5em;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(80,0,120,0.12);
+    transition: background 0.2s, transform 0.2s;
+}
+#openModalBtn:hover {
+    background: linear-gradient(90deg, #a259ff, #4f8cff);
+    transform: scale(1.05);
+}
+
+main {
+    padding: 2vw 3vw;
+}
+
+#stories-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.story-card {
+    background: rgba(255,255,255,0.12);
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(80,0,120,0.10);
+    padding: 1.5rem;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+.story-card:hover {
+    box-shadow: 0 6px 24px rgba(80,0,120,0.18);
+    transform: translateY(-4px) scale(1.02);
+}
+.story-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    color: #fff;
+}
+.story-meta {
+    font-size: 0.95em;
+    color: #e0e0ff;
+    margin-bottom: 0.7em;
+}
+.story-content {
+    font-size: 1.05em;
+    margin-bottom: 0.7em;
+}
+.story-cover {
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 0.7em;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0; width: 100vw; height: 100vh;
+    background: rgba(30, 34, 90, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background: #23235b;
+    padding: 2rem 2.5rem;
+    border-radius: 18px;
+    box-shadow: 0 4px 32px rgba(80,0,120,0.18);
+    position: relative;
+    min-width: 320px;
+    max-width: 95vw;
+}
+.close {
+    position: absolute;
+    top: 1rem;
+    right: 1.2rem;
+    font-size: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+}
+form#storyForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+form#storyForm input, form#storyForm textarea, form#storyForm select {
+    border: none;
+    border-radius: 8px;
+    padding: 0.7em;
+    font-size: 1em;
+    background: #fff;
+    color: #23235b;
+}
+form#storyForm button {
+    background: linear-gradient(90deg, #4f8cff, #a259ff);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 0.7em 1.5em;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 0.5em;
+    transition: background 0.2s, transform 0.2s;
+}
+form#storyForm button:hover {
+    background: linear-gradient(90deg, #a259ff, #4f8cff);
+    transform: scale(1.04);
+}
+
+.centered {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #4f8cff 0%, #a259ff 100%);
+}
+
+.form-card {
+    background: rgba(30, 34, 90, 0.92);
+    border-radius: 18px;
+    box-shadow: 0 4px 32px rgba(80,0,120,0.18);
+    padding: 2.5rem 2.5rem 2rem 2.5rem;
+    min-width: 320px;
+    max-width: 95vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.form-card h2 {
+    color: #fff;
+    margin-bottom: 1.5em;
+    font-size: 2rem;
+    letter-spacing: 1px;
+}
+.form-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1em;
+    width: 100%;
+}
+.form-card input {
+    border: none;
+    border-radius: 8px;
+    padding: 0.8em 1em;
+    font-size: 1.1em;
+    background: #fff;
+    color: #23235b;
+    margin-bottom: 0.2em;
+    width: 100%;
+    box-sizing: border-box;
+}
+.form-card button {
+    background: linear-gradient(90deg, #4f8cff, #a259ff);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 0.8em 1.5em;
+    font-size: 1.1em;
+    cursor: pointer;
+    margin-top: 0.5em;
+    transition: background 0.2s, transform 0.2s;
+    font-weight: bold;
+}
+.form-card button:hover {
+    background: linear-gradient(90deg, #a259ff, #4f8cff);
+    transform: scale(1.04);
+}
+.form-card a {
+    color: #a259ff;
+    text-decoration: underline;
+    font-weight: bold;
+}
+.form-card a:hover {
+    color: #4f8cff;
+}
+.logout-btn {
+    background: #fff;
+    color: #a259ff;
+    border: none;
+    border-radius: 25px;
+    padding: 0.7em 1.5em;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-left: 1em;
+    font-weight: bold;
+    transition: background 0.2s, color 0.2s;
+}
+.logout-btn:hover {
+    background: #a259ff;
+    color: #fff;
+}
+.admin-section {
+    margin: 2.5rem 0;
+}
+.admin-section h2 {
+    color: #fff;
+    margin-bottom: 1em;
+    font-size: 1.3rem;
+}
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255,255,255,0.10);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2em;
+}
+.admin-table th, .admin-table td {
+    padding: 0.9em 1em;
+    text-align: left;
+    color: #fff;
+}
+.admin-table th {
+    background: #4f8cff;
+    color: #fff;
+    font-weight: bold;
+}
+.admin-table tr:nth-child(even) {
+    background: rgba(162,89,255,0.10);
+}
+.admin-table tr:hover {
+    background: rgba(79,140,255,0.18);
+}
+.admin-table button {
+    background: linear-gradient(90deg, #4f8cff, #a259ff);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.4em 1em;
+    font-size: 1em;
+    cursor: pointer;
+    margin-right: 0.5em;
+    transition: background 0.2s, transform 0.2s;
+}
+.admin-table button:hover {
+    background: linear-gradient(90deg, #a259ff, #4f8cff);
+    transform: scale(1.04);
+}
+@media (max-width: 600px) {
+    header, main {
+        padding: 1rem 2vw;
+    }
+    .modal-content {
+        padding: 1rem 1vw;
+    }
+    .form-card {
+        padding: 1.2rem 1vw;
+        min-width: 90vw;
+    }
+}
+@media (max-width: 800px) {
+    .admin-table, .admin-table th, .admin-table td {
+        font-size: 0.95em;
+    }
+    .admin-section {
+        margin: 1.2rem 0;
+    }
+} 

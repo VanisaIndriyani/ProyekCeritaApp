@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Cerita Mahasiswa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Admin Panel</h1>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+    </header>
+    <main>
+        <section class="admin-section">
+            <h2>Moderasi Cerita</h2>
+            <table class="admin-table" id="storiesTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Judul</th>
+                        <th>User</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data cerita -->
+                </tbody>
+            </table>
+        </section>
+        <section class="admin-section">
+            <h2>Manajemen User</h2>
+            <table class="admin-table" id="usersTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data user -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <script src="admin.js"></script>
+</body>
+</html> 
