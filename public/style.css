@@ -1,9 +1,11 @@
 body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(135deg, #4f8cff 0%, #a259ff 100%);
-    margin: 0;
+    background: #f7f8fa;
+    color: #23235b;
     min-height: 100vh;
-    color: #fff;
+    margin: 0;
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    font-size: 1.05em;
+    line-height: 1.6;
 }
 
 header {
@@ -270,6 +272,127 @@ form#storyForm button:hover {
 .admin-table button:hover {
     background: linear-gradient(90deg, #a259ff, #4f8cff);
     transform: scale(1.04);
+}
+.story-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+    list-style: none;
+    padding: 0;
+    margin: 2em 0 0 0;
+    justify-content: center;
+}
+.story-list li {
+    background: #fff;
+    color: #23235b;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(79,140,255,0.10), 0 1.5px 6px rgba(162,89,255,0.10);
+    padding: 2em 1.5em 1.5em 1.5em;
+    min-width: 270px;
+    max-width: 340px;
+    flex: 1 1 300px;
+    margin-bottom: 1em;
+    transition: transform 0.18s, box-shadow 0.18s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.story-list li:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(79,140,255,0.18), 0 3px 12px rgba(162,89,255,0.18);
+}
+.story-list h3 {
+    margin: 0 0 0.5em 0;
+    font-size: 1.2em;
+    color: #4f8cff;
+}
+.story-list .excerpt {
+    font-size: 1em;
+    color: #555;
+    margin-top: 0.5em;
+}
+.public-section h2 {
+    color: #4f8cff;
+    margin-bottom: 1.2em;
+    text-align: center;
+}
+.hero {
+    text-align: center;
+    margin: 2.5em 0 1.5em 0;
+}
+.hero h2 {
+    color: #a259ff;
+    font-size: 2em;
+    margin-bottom: 0.5em;
+}
+.hero p {
+    color: #fff;
+    font-size: 1.1em;
+    margin-bottom: 0;
+}
+.hero-desc {
+    color: #23235b !important;
+    font-size: 1.08em;
+    margin-bottom: 0;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.85);
+    border-radius: 10px;
+    padding: 0.7em 1.2em;
+    display: inline-block;
+    margin-top: 1em;
+}
+.btn {
+    background: linear-gradient(90deg, #4f8cff, #a259ff);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 0.7em 1.5em;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-left: 0.5em;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s, transform 0.15s;
+    display: inline-block;
+}
+.btn:hover {
+    background: linear-gradient(90deg, #a259ff, #4f8cff);
+    color: #fff;
+    transform: scale(1.06);
+}
+.badge {
+    display: inline-block;
+    padding: 0.3em 1em;
+    border-radius: 12px;
+    font-size: 0.95em;
+    font-weight: bold;
+    margin-bottom: 0.7em;
+    margin-right: 0.5em;
+    color: #fff;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(79,140,255,0.10);
+}
+.badge-akademik {
+    background: linear-gradient(90deg, #4f8cff, #a259ff);
+}
+.badge-karir {
+    background: linear-gradient(90deg, #ffb347, #ff7b7b);
+}
+.badge-kehidupan {
+    background: linear-gradient(90deg, #43e97b, #38f9d7);
+    color: #23235b;
+}
+.hero svg {
+    display: block;
+    margin: 0 auto 1.2em auto;
+    max-width: 100%;
+    height: auto;
+}
+footer {
+    text-align: center;
+    margin-top: 2.5em;
+    padding-bottom: 1.5em;
 }
 @media (max-width: 600px) {
     header, main {
