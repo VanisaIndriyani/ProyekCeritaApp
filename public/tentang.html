@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang - Cerita Mahasiswa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo-nav">
+            <img src="https://img.icons8.com/color/48/000000/graduation-cap--v2.png" alt="Logo" class="logo-img">
+            <span class="logo-title">Cerita Mahasiswa</span>
+        </div>
+        <nav class="main-nav">
+            <a href="index.html" class="nav-link">Beranda</a>
+            <a href="kategori.html" class="nav-link">Kategori</a>
+            <a href="tentang.html" class="nav-link active">Tentang</a>
+            <a href="login.html" class="user-icon-link" title="Login">
+                <img src="https://img.icons8.com/ios-filled/36/4f8cff/user-male-circle.png" alt="Login" class="user-icon">
+            </a>
+        </nav>
+    </header>
+    <main>
+        <section class="hero-alt">
+            <div class="hero-ornament">
+                <svg width="340" height="80" viewBox="0 0 340 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="170" cy="40" rx="160" ry="28" fill="#a259ff" fill-opacity="0.10"/>
+                    <ellipse cx="170" cy="40" rx="100" ry="18" fill="#4f8cff" fill-opacity="0.13"/>
+                    <circle cx="80" cy="40" r="15" fill="#4f8cff" fill-opacity="0.18"/>
+                    <circle cx="260" cy="40" r="12" fill="#a259ff" fill-opacity="0.16"/>
+                </svg>
+            </div>
+            <h1 class="hero-title"><span class="highlight">Tentang</span> Cerita Mahasiswa</h1>
+            <p class="hero-sub">Platform berbagi cerita, pengalaman, dan inspirasi dari mahasiswa untuk mahasiswa.<br>Temukan kisah menarik, bagikan pengalamanmu, dan tumbuh bersama komunitas kampus!</p>
+        </section>
+        <section class="tentang-section">
+            <div class="visi-misi-row">
+                <div class="visi-card">
+                    <div class="visi-icon">🎯</div>
+                    <h3>Visi</h3>
+                    <p>Menjadi wadah utama bagi mahasiswa Indonesia untuk saling berbagi pengalaman, inspirasi, dan tips seputar dunia kampus.</p>
+                </div>
+                <div class="misi-card">
+                    <div class="misi-icon">🚀</div>
+                    <h3>Misi</h3>
+                    <p>Menginspirasi, mengedukasi, dan mempererat solidaritas antar mahasiswa melalui kekuatan cerita.</p>
+                </div>
+            </div>
+            <div class="tim-box">
+                <h2>Tim Kami</h2>
+                <ul class="tim-list">
+                    <li><img src="https://randomuser.me/api/portraits/women/65.jpg" class="tim-avatar"> <b>Vanisa Indriyani</b></li>
+                    <li><img src="https://randomuser.me/api/portraits/women/66.jpg" class="tim-avatar"> <b>Triyas Nurlita Nurul Adha</b></li>
+                    <li><img src="https://randomuser.me/api/portraits/men/67.jpg" class="tim-avatar"> <b>Gede Aryamulya Putra Kumara</b></li>
+                    <li><img src="https://randomuser.me/api/portraits/men/68.jpg" class="tim-avatar"> <b>Khairunnas</b></li>
+                    <li><img src="https://randomuser.me/api/portraits/men/69.jpg" class="tim-avatar"> <b>Abdul Rahman Wahid</b></li>
+                    <li><img src="https://randomuser.me/api/portraits/men/70.jpg" class="tim-avatar"> <b>Bagus Nur Sulaiman</b></li>
+                </ul>
+            </div>
+            <div class="kontak-box">
+                <h2>Kontak</h2>
+                <p><img src="https://img.icons8.com/fluency/24/000000/new-post.png" style="vertical-align:middle;margin-right:6px;"> Email: <a href="mailto:info@ceritamahasiswa.id">info@ceritamahasiswa.id</a></p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Cerita Mahasiswa. All rights reserved.</p>
+    </footer>
+    <style>
+.user-icon-link {
+    display: inline-block;
+    margin-left: 1.2em;
+    border-radius: 50%;
+    transition: background 0.18s;
+    padding: 2px;
+}
+.user-icon-link:hover {
+    background: #f0f4ff;
+}
+.user-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: block;
+}
+.visi-misi-row {
+    display: flex;
+    gap: 2em;
+    justify-content: center;
+    margin-bottom: 2.5em;
+    flex-wrap: wrap;
+}
+.visi-card, .misi-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(79,140,255,0.10);
+    padding: 2em 2em 1.5em 2em;
+    min-width: 220px;
+    max-width: 350px;
+    flex: 1 1 260px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.visi-card { border-top: 5px solid #4f8cff; }
+.misi-card { border-top: 5px solid #ff4f6d; }
+.visi-icon, .misi-icon {
+    font-size: 2.2em;
+    margin-bottom: 0.5em;
+}
+.visi-card h3, .misi-card h3 {
+    margin-bottom: 0.5em;
+    color: #4f8cff;
+    font-size: 1.3em;
+}
+.misi-card h3 { color: #ff4f6d; }
+.hero-alt {
+    text-align: center;
+    margin: 2.5em 0 2.2em 0;
+    position: relative;
+}
+.hero-ornament {
+    margin: 0 auto 1.2em auto;
+    max-width: 340px;
+}
+.hero-title {
+    font-size: 2.5em;
+    font-weight: 800;
+    margin-bottom: 0.2em;
+    letter-spacing: 1px;
+    color: #4f8cff;
+}
+.hero-title .highlight {
+    color: #ff4f6d;
+}
+.hero-sub {
+    color: #23235b;
+    font-size: 1.18em;
+    margin-bottom: 0;
+    font-weight: 400;
+    margin-top: 0.7em;
+}
+@media (max-width: 600px) {
+    .hero-title { font-size: 1.3em; }
+    .hero-ornament { max-width: 98vw; }
+}
+@media (max-width: 800px) {
+    .visi-misi-row { flex-direction: column; gap: 1.2em; }
+    .visi-card, .misi-card { max-width: 98vw; }
+}
+</style>
+</body>
+</html> 

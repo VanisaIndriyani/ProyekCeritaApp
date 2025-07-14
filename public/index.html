@@ -7,55 +7,118 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Cerita Mahasiswa</h1>
-        <nav>
-            <a href="login.html" class="btn">Login</a>
-            <a href="register.html" class="btn">Daftar</a>
+    <header class="main-header">
+        <div class="logo-nav">
+            <img src="https://img.icons8.com/color/48/000000/graduation-cap--v2.png" alt="Logo" class="logo-img">
+            <span class="logo-title">Cerita Mahasiswa</span>
+        </div>
+        <nav class="main-nav">
+            <a href="index.html" class="nav-link active">Beranda</a>
+            <a href="kategori.html" class="nav-link">Kategori</a>
+            <a href="tentang.html" class="nav-link">Tentang</a>
+            <a href="login.html" class="user-icon-link" title="Login">
+                <img src="https://img.icons8.com/ios-filled/36/4f8cff/user-male-circle.png" alt="Login" class="user-icon">
+            </a>
         </nav>
     </header>
     <main>
-        <section class="hero">
-            <div style="max-width:420px;margin:0 auto 1.5em auto;">
-                <!-- Ilustrasi SVG simple -->
-                <svg width="100%" height="120" viewBox="0 0 420 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="210" cy="60" rx="200" ry="40" fill="#a259ff" fill-opacity="0.13"/>
-                  <ellipse cx="210" cy="60" rx="120" ry="30" fill="#4f8cff" fill-opacity="0.18"/>
-                  <circle cx="110" cy="60" r="18" fill="#4f8cff" fill-opacity="0.25"/>
-                  <circle cx="320" cy="60" r="14" fill="#a259ff" fill-opacity="0.22"/>
-                </svg>
-            </div>
-            <h2>Selamat datang di Cerita Mahasiswa!</h2>
-            <p class="hero-desc">Platform berbagi cerita, pengalaman, dan inspirasi dari mahasiswa untuk mahasiswa. Temukan kisah menarik, bagikan pengalamanmu, dan terhubung dengan komunitas kampus.</p>
+        <section class="hero-alt">
+            <h1 class="hero-title">Cerita <span class="highlight">Mahasiswa</span></h1>
+            <p class="hero-sub">Telusuri kisah inspiratif, pengalaman, dan tips seputar dunia kampus. <b>Bagikan ceritamu</b> atau baca cerita dari mahasiswa lain!</p>
+        </section>
+        <section class="filter-bar">
+            <select class="filter-kategori">
+                <option>Semua Kategori</option>
+                <option>Akademik</option>
+                <option>Karir</option>
+                <option>Kehidupan</option>
+            </select>
+            <form class="search-form" onsubmit="return false;">
+                <input type="text" class="search-input" placeholder="Cari judul cerita di sini">
+                <button class="btn-search">Cari</button>
+            </form>
         </section>
         <section class="public-section">
-            <h2>Cerita Terbaru</h2>
             <ul class="story-list">
                 <li>
-                    <h3>Perjuangan Skripsi di Tengah Pandemi</h3>
-                    <span class="badge badge-akademik">Akademik</span>
-                    <p>Oleh: <b>user1</b></p>
-                    <p class="excerpt">Menghadapi skripsi saat pandemi memang penuh tantangan. Tapi aku belajar banyak tentang manajemen waktu dan mental...</p>
+                    <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Cover Skripsi" class="story-cover">
+                    <div class="story-content-wrap">
+                        <span class="badge badge-akademik">Akademik</span>
+                        <h3>Perjuangan Skripsi di Tengah Pandemi</h3>
+                        <p class="story-meta">Oleh: <b>user1</b></p>
+                        <p class="excerpt">Menghadapi skripsi saat pandemi memang penuh tantangan. Tapi aku belajar banyak tentang manajemen waktu dan mental...</p>
+                        <a href="story-detail.html" class="btn btn-baca">Baca Cerita</a>
+                    </div>
                 </li>
                 <li>
-                    <h3>Pengalaman Magang di Startup</h3>
-                    <span class="badge badge-karir">Karir</span>
-                    <p>Oleh: <b>user2</b></p>
-                    <p class="excerpt">Magang di startup membuatku lebih adaptif dan kreatif. Banyak ilmu baru yang aku dapatkan selama 3 bulan di sana...</p>
+                    <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" alt="Cover Magang" class="story-cover">
+                    <div class="story-content-wrap">
+                        <span class="badge badge-karir">Karir</span>
+                        <h3>Pengalaman Magang di Startup</h3>
+                        <p class="story-meta">Oleh: <b>user2</b></p>
+                        <p class="excerpt">Magang di startup membuatku lebih adaptif dan kreatif. Banyak ilmu baru yang aku dapatkan selama 3 bulan di sana...</p>
+                        <a href="story-detail.html" class="btn btn-baca">Baca Cerita</a>
+                    </div>
                 </li>
                 <li>
-                    <h3>Tips Bertahan Hidup di Perantauan</h3>
-                    <span class="badge badge-kehidupan">Kehidupan</span>
-                    <p>Oleh: <b>user3</b></p>
-                    <p class="excerpt">Merantau itu seru tapi juga penuh tantangan. Ini tipsku agar tetap semangat dan tidak homesick...</p>
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Cover Perantauan" class="story-cover">
+                    <div class="story-content-wrap">
+                        <span class="badge badge-kehidupan">Kehidupan</span>
+                        <h3>Tips Bertahan Hidup di Perantauan</h3>
+                        <p class="story-meta">Oleh: <b>user3</b></p>
+                        <p class="excerpt">Merantau itu seru tapi juga penuh tantangan. Ini tipsku agar tetap semangat dan tidak homesick...</p>
+                        <a href="story-detail.html" class="btn btn-baca">Baca Cerita</a>
+                    </div>
                 </li>
             </ul>
-          
         </section>
     </main>
     <footer>
         <p>&copy; 2025 Cerita Mahasiswa. All rights reserved.</p>
         <p style="font-size:0.95em;color:#a259ff;margin-top:0.5em;">Dibuat dengan ❤️ untuk mahasiswa Indonesia.</p>
     </footer>
+    <script>
+// Highlight kartu sesuai kategori dari query string
+(function() {
+    const params = new URLSearchParams(window.location.search);
+    const kategori = params.get('kategori');
+    if (!kategori) return;
+    document.querySelectorAll('.story-list li').forEach(li => {
+        const badge = li.querySelector('.badge');
+        if (badge && badge.textContent.trim().toLowerCase() === kategori.toLowerCase()) {
+            li.style.border = '2.5px solid #4f8cff';
+            li.style.boxShadow = '0 0 0 4px #e0f0ff';
+        } else {
+            li.style.opacity = '0.45';
+        }
+    });
+})();
+
+// Filter kategori otomatis
+const selectKategori = document.querySelector('.filter-kategori');
+const searchInput = document.querySelector('.search-input');
+function filterStories() {
+    const kategori = selectKategori ? selectKategori.value.toLowerCase() : 'semua kategori';
+    const keyword = searchInput ? searchInput.value.toLowerCase() : '';
+    document.querySelectorAll('.story-list li').forEach(li => {
+        const badge = li.querySelector('.badge');
+        const title = li.querySelector('h3');
+        let show = true;
+        if (kategori !== 'semua kategori' && badge && badge.textContent.trim().toLowerCase() !== kategori) {
+            show = false;
+        }
+        if (keyword && title && !title.textContent.toLowerCase().includes(keyword)) {
+            show = false;
+        }
+        li.style.display = show ? '' : 'none';
+    });
+}
+if (selectKategori) {
+    selectKategori.addEventListener('change', filterStories);
+}
+if (searchInput) {
+    searchInput.addEventListener('input', filterStories);
+}
+</script>
 </body>
 </html>
