@@ -5,49 +5,247 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Cerita Mahasiswa</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #4f8cff 0%, #a259ff 100%);
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+        }
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 240px;
+            background: linear-gradient(135deg, #4f8cff 0%, #a259ff 100%);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2.5em 1em 1em 1em;
+            box-shadow: 2px 0 16px rgba(80,0,120,0.10);
+            position: sticky;
+            top: 0;
+            min-height: 100vh;
+        }
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.7em;
+            margin-bottom: 2.5em;
+        }
+        .sidebar-logo-img {
+            width: 44px; height: 44px; border-radius: 50%; background: #f7f8fa;
+            box-shadow: 0 2px 8px rgba(79,140,255,0.10);
+        }
+        .sidebar-logo-title {
+            font-size: 1.25em; font-weight: bold; color: #fff; letter-spacing: 1px;
+        }
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2em;
+            width: 100%;
+        }
+        .sidebar-link {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.08em;
+            padding: 0.6em 1em;
+            border-radius: 8px;
+            transition: background 0.15s, color 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 0.7em;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background: rgba(255,255,255,0.18);
+            color: #fff;
+        }
+        .sidebar-logout {
+            margin-top: auto;
+            width: 100%;
+            background: #fff;
+            color: #a259ff;
+            border: none;
+            border-radius: 25px;
+            padding: 0.7em 1.5em;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s, color 0.2s;
+        }
+        .sidebar-logout:hover {
+            background: #a259ff;
+            color: #fff;
+        }
+        .admin-main {
+            flex: 1;
+            padding: 2.5em 2vw 2em 2vw;
+            background: none;
+        }
+        .admin-section {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(79,140,255,0.10);
+            padding: 2em 2em 1.5em 2em;
+            margin-bottom: 2.5em;
+            max-width: 1100px;
+        }
+        .admin-section h2 {
+            color: #4f8cff;
+            font-size: 1.3em;
+            margin-bottom: 1.2em;
+        }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #f7f8fa;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(80,0,120,0.10);
+        }
+        .admin-table th, .admin-table td {
+            padding: 0.9em 1em;
+            text-align: left;
+            color: #23235b;
+        }
+        .admin-table th {
+            background: #4f8cff;
+            color: #fff;
+            font-weight: bold;
+        }
+        .admin-table tr:nth-child(even) { background: #f0f4ff; }
+        .admin-table tr:hover { background: #e0f0ff; }
+        .admin-table button {
+            background: #fff;
+            color: #4f8cff;
+            border: 1px solid #4f8cff;
+            border-radius: 8px;
+            padding: 0.3em 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 0.3em;
+            transition: background 0.18s, color 0.18s;
+        }
+        .admin-table button:hover {
+            background: #4f8cff;
+            color: #fff;
+        }
+        @media (max-width: 900px) {
+            .admin-section { padding: 1em 0.2em; }
+            .admin-main { padding: 1em 0.2em; }
+            .sidebar { width: 100px; padding: 1em 0.2em; }
+            .sidebar-logo-title { display: none; }
+            .sidebar-menu { gap: 0.5em; }
+        }
+        @media (max-width: 600px) {
+            .admin-layout { flex-direction: column; }
+            .sidebar { flex-direction: row; width: 100vw; min-height: unset; height: auto; padding: 1em 0.5em; }
+            .admin-main { padding: 1em 0.2em; }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Admin Panel</h1>
-        <button id="logoutBtn" class="logout-btn">Logout</button>
-    </header>
-    <main>
-        <section class="admin-section">
-            <h2>Moderasi Cerita</h2>
-            <table class="admin-table" id="storiesTable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Judul</th>
-                        <th>User</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Data cerita -->
-                </tbody>
-            </table>
-        </section>
-        <section class="admin-section">
-            <h2>Manajemen User</h2>
-            <table class="admin-table" id="usersTable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Username</th>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Data user -->
-                </tbody>
-            </table>
-        </section>
-    </main>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="https://img.icons8.com/color/48/000000/graduation-cap--v2.png" alt="Logo" class="sidebar-logo-img">
+                <span class="sidebar-logo-title">Cerita Mahasiswa</span>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="#" class="sidebar-link active" id="menuCerita">Cerita</a>
+                <a href="#" class="sidebar-link" id="menuUser">User</a>
+                <a href="#" class="sidebar-link" id="menuAbout">Tentang Kami</a>
+            </nav>
+            <button id="logoutBtn" class="sidebar-logout">Logout</button>
+        </aside>
+        <main class="admin-main">
+            <section class="admin-section" id="moderasi">
+                <h2>Moderasi Cerita</h2>
+                <table class="admin-table" id="storiesTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Gambar</th>
+                            <th>Judul</th>
+                            <th>User</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data cerita -->
+                    </tbody>
+                </table>
+            </section>
+            <section class="admin-section" id="manajemen" style="display:none;">
+                <h2>Manajemen User</h2>
+                <table class="admin-table" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data user -->
+                    </tbody>
+                </table>
+            </section>
+            <section class="admin-section" id="aboutSection" style="display:none;max-width:600px;">
+                <h2>Edit Tentang Kami</h2>
+                <form id="aboutForm">
+                    <textarea id="aboutContent" rows="8" style="width:100%;font-size:1.1em;padding:1em;border-radius:10px;border:1px solid #d0d0ff;resize:vertical;"></textarea>
+                    <button type="submit" style="margin-top:1.2em;background:linear-gradient(90deg,#4f8cff,#a259ff);color:#fff;border:none;border-radius:25px;padding:0.7em 1.5em;font-size:1.1em;font-weight:bold;cursor:pointer;">Simpan</button>
+                </form>
+                <div id="aboutNotif" style="margin-top:1em;font-weight:bold;"></div>
+            </section>
+        </main>
+    </div>
     <script src="admin.js"></script>
+    <script>
+    // Toggle section dan menu aktif
+    const menuCerita = document.getElementById('menuCerita');
+    const menuUser = document.getElementById('menuUser');
+    const menuAbout = document.getElementById('menuAbout');
+    const sectionCerita = document.getElementById('moderasi');
+    const sectionUser = document.getElementById('manajemen');
+    const sectionAbout = document.getElementById('aboutSection');
+
+    menuCerita.onclick = function(e) {
+        e.preventDefault();
+        menuCerita.classList.add('active');
+        menuUser.classList.remove('active');
+        menuAbout.classList.remove('active');
+        sectionCerita.style.display = '';
+        sectionUser.style.display = 'none';
+        sectionAbout.style.display = 'none';
+    };
+    menuUser.onclick = function(e) {
+        e.preventDefault();
+        menuUser.classList.add('active');
+        menuCerita.classList.remove('active');
+        menuAbout.classList.remove('active');
+        sectionUser.style.display = '';
+        sectionCerita.style.display = 'none';
+        sectionAbout.style.display = 'none';
+    };
+    menuAbout.onclick = function(e) {
+        e.preventDefault();
+        menuAbout.classList.add('active');
+        menuCerita.classList.remove('active');
+        menuUser.classList.remove('active');
+        sectionAbout.style.display = '';
+        sectionCerita.style.display = 'none';
+        sectionUser.style.display = 'none';
+    };
+    </script>
 </body>
 </html> 

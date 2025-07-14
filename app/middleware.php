@@ -7,4 +7,5 @@ use Slim\App;
 
 return function (App $app) {
     $app->add(SessionMiddleware::class);
+    $app->add(new \Slim\Middleware\MethodOverrideMiddleware());
 };

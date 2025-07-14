@@ -19,7 +19,7 @@ class MySQLStoryRepository implements StoryRepository
 
     public function findAll(): array
     {
-        $stmt = $this->pdo->query("SELECT * FROM stories ORDER BY createdAt DESC");
+        $stmt = $this->pdo->query("SELECT * FROM stories WHERE status = 'published' ORDER BY createdAt DESC");
         $rows = $stmt->fetchAll();
         return array_map([$this, 'rowToStory'], $rows);
     }
@@ -35,31 +35,42 @@ class MySQLStoryRepository implements StoryRepository
 
     public function save(Story $story): Story
     {
-        $stmt = $this->pdo->prepare("INSERT INTO stories (userId, title, content, category, coverImage, createdAt) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $this->pdo->prepare("INSERT INTO stories (userId, title, content, category, coverImage, createdAt, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([
             $story->getUserId(),
             $story->getTitle(),
             $story->getContent(),
             $story->getCategory(),
             $story->getCoverImage(),
-            $story->getCreatedAt()
+            $story->getCreatedAt(),
+            $story->getStatus() ?? 'pending'
         ]);
         $id = (int)$this->pdo->lastInsertId();
-        return new Story($id, $story->getUserId(), $story->getTitle(), $story->getContent(), $story->getCategory(), $story->getCoverImage(), $story->getCreatedAt());
+        return new Story($id, $story->getUserId(), $story->getTitle(), $story->getContent(), $story->getCategory(), $story->getCoverImage(), $story->getCreatedAt(), null, $story->getStatus() ?? 'pending');
     }
 
     public function update(Story $story): Story
     {
-        $stmt = $this->pdo->prepare("UPDATE stories SET userId=?, title=?, content=?, category=?, coverImage=?, updatedAt=? WHERE id=?");
-        $stmt->execute([
-            $story->getUserId(),
-            $story->getTitle(),
-            $story->getContent(),
-            $story->getCategory(),
-            $story->getCoverImage(),
-            $story->getUpdatedAt(),
-            $story->getId()
-        ]);
+        $stmt = $this->pdo->prepare("
+            UPDATE stories SET
+                userId = :userId,
+                title = :title,
+                content = :content,
+                category = :category,
+                coverImage = :coverImage,
+                updatedAt = :updatedAt,
+                status = :status
+            WHERE id = :id
+        ");
+        $stmt->bindValue(':id', $story->getId(), PDO::PARAM_INT);
+        $stmt->bindValue(':userId', $story->getUserId(), PDO::PARAM_INT);
+        $stmt->bindValue(':title', $story->getTitle());
+        $stmt->bindValue(':content', $story->getContent());
+        $stmt->bindValue(':category', $story->getCategory());
+        $stmt->bindValue(':coverImage', $story->getCoverImage());
+        $stmt->bindValue(':updatedAt', $story->getUpdatedAt());
+        $stmt->bindValue(':status', $story->getStatus() ?? 'pending');
+        $stmt->execute();
         return $story;
     }
 
@@ -77,6 +88,13 @@ class MySQLStoryRepository implements StoryRepository
         return array_map([$this, 'rowToStory'], $rows);
     }
 
+    public function findAllAdmin(): array
+    {
+        $stmt = $this->pdo->query("SELECT * FROM stories ORDER BY createdAt DESC");
+        $rows = $stmt->fetchAll();
+        return array_map([$this, 'rowToStory'], $rows);
+    }
+
     private function rowToStory(array $row): Story
     {
         return new Story(
@@ -87,7 +105,8 @@ class MySQLStoryRepository implements StoryRepository
             $row['category'],
             $row['coverImage'],
             $row['createdAt'],
-            $row['updatedAt'] ?? null
+            $row['updatedAt'] ?? null,
+            $row['status'] ?? null
         );
     }
 } 

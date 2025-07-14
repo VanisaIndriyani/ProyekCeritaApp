@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Siswa - Cerita Mahasiswa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: #f7f8fa; color: #23235b; font-family: 'Poppins', sans-serif; margin: 0; }
+        .main-header { background: #fff; box-shadow: 0 2px 8px rgba(80,0,120,0.06); display: flex; justify-content: space-between; align-items: center; padding: 1.2em 3vw; position: sticky; top: 0; z-index: 10; }
+        .logo-nav { display: flex; align-items: center; gap: 0.7em; }
+        .logo-img { width: 44px; height: 44px; border-radius: 50%; background: #f7f8fa; box-shadow: 0 2px 8px rgba(79,140,255,0.10); }
+        .logo-title { font-size: 1.35em; font-weight: bold; color: #4f8cff; letter-spacing: 1px; }
+        .main-nav { display: flex; align-items: center; gap: 1.2em; }
+        .nav-link { color: #23235b; text-decoration: none; font-weight: 500; font-size: 1.05em; padding: 0.2em 0.7em; border-radius: 8px; transition: background 0.15s, color 0.15s; }
+        .nav-link.active, .nav-link:hover { background: #f0f4ff; color: #4f8cff; }
+        .user-icon-link { display: inline-block; margin-left: 1.2em; border-radius: 50%; transition: background 0.18s; padding: 2px; }
+        .user-icon-link:hover { background: #f0f4ff; }
+        .user-icon { width: 36px; height: 36px; border-radius: 50%; display: block; }
+        .logout-btn { background: #fff; color: #a259ff; border: none; border-radius: 25px; padding: 0.7em 1.5em; font-size: 1rem; cursor: pointer; margin-left: 1em; font-weight: bold; transition: background 0.2s, color 0.2s; }
+        .logout-btn:hover { background: #a259ff; color: #fff; }
+        .dashboard-container { max-width: 900px; margin: 2.5em auto 2em auto; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(79,140,255,0.10); padding: 2.5em 2em 2em 2em; }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2em; }
+        .dashboard-header h2 { font-size: 2em; color: #4f8cff; font-weight: 800; margin: 0; }
+        .add-story-btn { background: linear-gradient(90deg, #4f8cff, #a259ff); color: #fff; border: none; border-radius: 25px; padding: 0.7em 1.5em; font-size: 1.1em; cursor: pointer; font-weight: bold; transition: background 0.2s, transform 0.2s; }
+        .add-story-btn:hover { background: linear-gradient(90deg, #a259ff, #4f8cff); transform: scale(1.04); }
+        .story-table { width: 100%; border-collapse: collapse; margin-top: 1.5em; }
+        .story-table th, .story-table td { padding: 0.9em 1em; text-align: left; color: #23235b; }
+        .story-table th { background: #4f8cff; color: #fff; font-weight: bold; }
+        .story-table tr:nth-child(even) { background: #f7f8fa; }
+        .story-table tr:hover { background: #e0f0ff; }
+        .badge-status { display: inline-block; padding: 0.3em 1em; border-radius: 12px; font-size: 0.95em; font-weight: bold; color: #fff; }
+        .badge-menunggu { background: #ffb347; color: #23235b; }
+        .badge-published { background: #4f8cff; }
+        /* Modal */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100vw; height: 100vh; background: rgba(30, 34, 90, 0.7); justify-content: center; align-items: center; }
+        .modal-content { background: #fff; padding: 2.2em 2.5em; border-radius: 18px; box-shadow: 0 4px 32px rgba(80,0,120,0.18); position: relative; min-width: 320px; max-width: 95vw; }
+        .close { position: absolute; top: 1rem; right: 1.2rem; font-size: 1.5rem; color: #a259ff; cursor: pointer; }
+        .story-form { display: flex; flex-direction: column; gap: 1em; width: 100%; }
+        .story-form input, .story-form textarea, .story-form select { border: none; border-radius: 8px; padding: 0.7em; font-size: 1em; background: #f7f8fa; color: #23235b; }
+        .story-form button { background: linear-gradient(90deg, #4f8cff, #a259ff); color: #fff; border: none; border-radius: 25px; padding: 0.7em 1.5em; font-size: 1em; cursor: pointer; margin-top: 0.5em; transition: background 0.2s, transform 0.2s; font-weight: bold; }
+        .story-form button:hover { background: linear-gradient(90deg, #a259ff, #4f8cff); transform: scale(1.04); }
+        .story-form label { font-weight: 500; margin-bottom: 0.2em; }
+        .story-form input[type="file"] { background: none; }
+        @media (max-width: 700px) { .dashboard-container { padding: 1em 0.2em; } .dashboard-header { flex-direction: column; gap: 1em; } .modal-content { padding: 1em 0.5em; } }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo-nav">
+            <img src="https://img.icons8.com/color/48/000000/graduation-cap--v2.png" alt="Logo" class="logo-img">
+            <span class="logo-title">Cerita Mahasiswa</span>
+        </div>
+        <nav class="main-nav">
+           
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </nav>
+    </header>
+    <main>
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h2>Dashboard Siswa</h2>
+                <button class="add-story-btn" id="openModalBtn">+ Tulis Cerita</button>
+            </div>
+            <table class="story-table">
+                <thead>
+                    <tr>
+                        <th>Gambar</th>
+                        <th>Judul</th>
+                        <th>Kategori</th>
+                        <th>Status</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="userStories">
+                    <tr>
+                        <td>Perjuangan Skripsi di Tengah Pandemi</td>
+                        <td>Akademik</td>
+                        <td><span class="badge-status badge-menunggu">Menunggu</span></td>
+                        <td>2024-07-14</td>
+                    </tr>
+                    <tr>
+                        <td>Pengalaman Magang di Startup</td>
+                        <td>Karir</td>
+                        <td><span class="badge-status badge-published">Published</span></td>
+                        <td>2024-07-10</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Modal Tambah Cerita -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeModalBtn">&times;</span>
+                <h2>Buat Cerita Baru</h2>
+                <form class="story-form">
+                    <label>Judul</label>
+                    <input type="text" name="title" placeholder="Judul cerita" required>
+                    <label>Kategori</label>
+                    <select name="category" required>
+                        <option value="">Pilih Kategori</option>
+                        <option value="Akademik">Akademik</option>
+                        <option value="Karir">Karir</option>
+                        <option value="Kehidupan">Kehidupan</option>
+                    </select>
+                    <label>Isi Cerita</label>
+                    <textarea name="content" placeholder="Tulis ceritamu di sini..." rows="5" required></textarea>
+                    <label>Upload Gambar (opsional)</label>
+                    <input type="file" name="coverImage" accept="image/*">
+                    <button type="submit">Kirim Cerita</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer style="text-align:center;margin-top:2.5em;padding-bottom:1.5em;color:#a259ff;font-size:1.05em;">
+        <p>&copy; 2025 Cerita Mahasiswa. All rights reserved.</p>
+    </footer>
+    <script>
+    // Modal logic
+    const modal = document.getElementById('modal');
+    const openModalBtn = document.getElementById('openModalBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    openModalBtn.onclick = () => { modal.style.display = 'flex'; };
+    closeModalBtn.onclick = () => { modal.style.display = 'none'; };
+    window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+    // Logout logic
+    function logout() {
+        localStorage.clear();
+        window.location.href = 'login.html';
+    }
+
+    // Ambil userId dari localStorage (harusnya disimpan saat login)
+    let userId = localStorage.getItem('userId');
+    if (!userId) {
+        // Jika tidak ada, redirect ke login tanpa alert
+        window.location.href = 'login.html';
+    }
+
+    // Handle submit cerita
+    const storyForm = document.querySelector('.story-form');
+    // Ganti fungsi loadUserStories di script JS
+    async function loadUserStories() {
+        const tbody = document.getElementById('userStories');
+        tbody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+        try {
+            const res = await fetch(`/stories?userId=${userId}`);
+            const resJson = await res.json();
+            const stories = resJson.data || [];
+            if (!stories.length) {
+                tbody.innerHTML = '<tr><td colspan="6">Belum ada cerita.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = stories.map(story => `
+                <tr>
+                    <td>
+                        ${story.coverImage ? `<img src="uploads/${story.coverImage}" alt="cover" style="width:60px;height:40px;object-fit:cover;border-radius:6px;">` : '<span style="color:#bbb">-</span>'}
+                    </td>
+                    <td>${story.title}</td>
+                    <td>${story.category}</td>
+                    <td><span class="badge-status ${story.status === 'published' ? 'badge-published' : 'badge-menunggu'}">${story.status === 'published' ? 'Published' : 'Menunggu'}</span></td>
+                    <td>${story.createdAt ? story.createdAt.substr(0,10) : '-'}</td>
+                    <td>
+                        <button onclick="deleteStory(${story.id})" style="background:#ff4f8c;color:#fff;border:none;border-radius:8px;padding:0.3em 0.8em;cursor:pointer;">Hapus</button>
+                    </td>
+                </tr>
+            `).join('');
+        } catch (err) {
+            tbody.innerHTML = '<tr><td colspan="6">Gagal memuat cerita.</td></tr>';
+        }
+    }
+    // Panggil saat halaman dimuat
+    loadUserStories();
+
+    // Tambahkan fungsi edit dan hapus cerita di bawah script
+    window.editStory = function(id) {
+        // Ambil data cerita dari list yang sudah di-load
+        fetch(`/stories/${id}`)
+            .then(res => res.json())
+            .then(resJson => {
+                const story = resJson.data;
+                if (!story) return showNotif('Cerita tidak ditemukan', true);
+                // Isi form dengan data cerita
+                storyForm.elements['title'].value = story.title;
+                storyForm.elements['category'].value = story.category;
+                storyForm.elements['content'].value = story.content;
+                // Tidak bisa set file input, biarkan kosong
+                storyForm.setAttribute('data-edit-id', id);
+                modal.style.display = 'flex';
+            });
+    }
+    window.deleteStory = async function(id) {
+        if (!confirm('Hapus cerita ini?')) return;
+        const res = await fetch(`/stories/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+            showNotif('Cerita dihapus!', false);
+            loadUserStories();
+        } else {
+            showNotif('Gagal menghapus cerita', true);
+        }
+    }
+    // Ubah handler submit form agar bisa edit
+    storyForm.onsubmit = async function(e) {
+        e.preventDefault();
+        const formData = new FormData(storyForm);
+        // Selalu ambil userId dari localStorage, jangan dari form
+        formData.set('userId', userId);
+        const editId = storyForm.getAttribute('data-edit-id');
+        let url = '/stories';
+        let method = 'POST';
+        if (editId) {
+            url = `/stories/${editId}`;
+            method = 'POST';
+            formData.append('_method', 'PUT');
+        }
+        try {
+            const res = await fetch(url, {
+                method: method,
+                body: formData
+            });
+            if (!res.ok) throw new Error(editId ? 'Gagal mengupdate cerita' : 'Gagal menyimpan cerita');
+            modal.style.display = 'none';
+            storyForm.reset();
+            storyForm.removeAttribute('data-edit-id');
+            showNotif(editId ? 'Cerita berhasil diupdate!' : 'Cerita berhasil dikirim!', false);
+            await loadUserStories();
+        } catch (err) {
+            showNotif(err.message || 'Gagal kirim cerita', true);
+        }
+    };
+    // Reset form saat modal ditutup
+    closeModalBtn.onclick = () => {
+        modal.style.display = 'none';
+        storyForm.reset();
+        storyForm.removeAttribute('data-edit-id');
+    };
+
+    // Notifikasi sederhana
+    function showNotif(msg, error) {
+        let notif = document.getElementById('notif');
+        if (!notif) {
+            document.body.insertAdjacentHTML('beforeend', '<div id="notif" style="display:none;position:fixed;top:2rem;right:2rem;z-index:2000;padding:1em 2em;border-radius:12px;font-weight:bold;font-size:1.1em;"></div>');
+            notif = document.getElementById('notif');
+        }
+        notif.style.display = 'block';
+        notif.style.background = error ? '#ff4f8c' : '#4f8cff';
+        notif.style.color = '#fff';
+        notif.textContent = msg;
+        setTimeout(() => notif.style.display = 'none', 2200);
+    }
+
+    // Cek status login
+    const isLoggedIn = !!localStorage.getItem('userId');
+    // Atur navigasi user icon
+    const userIconLink = document.querySelector('.user-icon-link');
+    if (userIconLink) {
+        if (isLoggedIn) {
+            // Jika sudah login, nonaktifkan link ke login.html
+            userIconLink.href = '#';
+            userIconLink.onclick = (e) => { e.preventDefault(); };
+        } else {
+            // Jika belum login, arahkan ke login.html
+            userIconLink.href = 'login.html';
+        }
+    }
+    // Sembunyikan tombol Logout jika belum login
+    const logoutBtn = document.querySelector('.logout-btn');
+    if (logoutBtn && !isLoggedIn) {
+        logoutBtn.style.display = 'none';
+    }
+    </script>
+</body>
+</html> 

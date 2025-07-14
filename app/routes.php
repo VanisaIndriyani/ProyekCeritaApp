@@ -41,7 +41,7 @@ return function (App $app) {
         $group->get('', ListStoriesAction::class);
         $group->get('/{id}', ViewStoryAction::class);
         $group->post('', CreateStoryAction::class);
-        $group->put('/{id}', UpdateStoryAction::class);
+        $group->map(['PUT', 'POST'], '/{id}', UpdateStoryAction::class);
         $group->delete('/{id}', DeleteStoryAction::class);
     });
 
@@ -54,5 +54,20 @@ return function (App $app) {
         $group->delete('/stories/{id}', DeleteStoryAdminAction::class);
         $group->get('/users', ListUsersAdminAction::class);
         $group->delete('/users/{id}', DeleteUserAdminAction::class);
+        // Tentang Kami endpoints
+        $group->get('/about', function ($request, $response) {
+            $file = __DIR__ . '/../var/about.txt';
+            $content = is_file($file) ? file_get_contents($file) : '';
+            $response->getBody()->write(json_encode(['content' => $content]));
+            return $response->withHeader('Content-Type', 'application/json');
+        });
+        $group->post('/about', function ($request, $response) {
+            $data = $request->getParsedBody();
+            $content = $data['content'] ?? '';
+            $file = __DIR__ . '/../var/about.txt';
+            file_put_contents($file, $content);
+            $response->getBody()->write(json_encode(['success' => true]));
+            return $response->withHeader('Content-Type', 'application/json');
+        });
     });
 };

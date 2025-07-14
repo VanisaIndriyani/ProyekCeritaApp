@@ -21,7 +21,7 @@ class ListStoriesAdminAction extends Action
 
     protected function action(): Response
     {
-        $stories = $this->storyRepository->findAll();
+        $stories = $this->storyRepository->findAllAdmin();
         return $this->respondWithData($stories);
     }
 } 

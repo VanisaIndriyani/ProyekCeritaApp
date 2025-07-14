@@ -35,10 +35,13 @@ form.onsubmit = async (e) => {
         }
         // Simpan role ke localStorage
         localStorage.setItem('role', user.role);
+        localStorage.setItem('userId', user.id);
         showNotif('Login berhasil! Redirect...');
         setTimeout(() => {
             if (user.role === 'admin') {
                 window.location.href = 'admin.html';
+            } else if (user.role === 'user') {
+                window.location.href = 'user.html';
             } else {
                 window.location.href = 'index.html';
             }

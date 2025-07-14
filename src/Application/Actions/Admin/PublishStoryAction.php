@@ -24,12 +24,7 @@ class PublishStoryAction extends Action
         $id = (int)$this->resolveArg('id');
         $story = $this->storyRepository->findStoryOfId($id);
         // Update status
-        $storyReflection = new \ReflectionClass($story);
-        $statusProp = $storyReflection->hasProperty('status') ? $storyReflection->getProperty('status') : null;
-        if ($statusProp) {
-            $statusProp->setAccessible(true);
-            $statusProp->setValue($story, 'published');
-        }
+        $story->setStatus('published');
         $this->storyRepository->update($story);
         return $this->respondWithData(['message' => 'Cerita dipublish']);
     }
