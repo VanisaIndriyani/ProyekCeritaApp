@@ -3,6 +3,9 @@
 declare(strict_types=1);
 
 use App\Application\Settings\SettingsInterface;
+use App\Application\Controllers\User\UserStoryFormController;
+use App\Application\Controllers\Web\HomeController;
+use App\Domain\Story\StoryRepository;
 use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -34,6 +37,18 @@ return function (ContainerBuilder $containerBuilder) {
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             ]);
+        },
+        UserStoryFormController::class => function (ContainerInterface $c) {
+            return new UserStoryFormController(
+                $c->get(LoggerInterface::class),
+                $c->get(StoryRepository::class)
+            );
+        },
+        HomeController::class => function (ContainerInterface $c) {
+            return new HomeController(
+                $c->get(LoggerInterface::class),
+                $c->get(StoryRepository::class)
+            );
         },
     ]);
 };
