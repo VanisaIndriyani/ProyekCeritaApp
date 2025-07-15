@@ -17,6 +17,7 @@ class Story implements JsonSerializable
     private string $createdAt;
     private ?string $updatedAt;
     private ?string $status;
+    private ?string $userName;
 
     public function __construct(
         ?int $id,
@@ -27,7 +28,8 @@ class Story implements JsonSerializable
         ?string $coverImage,
         string $createdAt,
         ?string $updatedAt = null,
-        ?string $status = null
+        ?string $status = null,
+        ?string $userName = null
     ) {
         $this->id = $id;
         $this->userId = $userId;
@@ -38,6 +40,7 @@ class Story implements JsonSerializable
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
         $this->status = $status;
+        $this->userName = $userName;
     }
 
     public function getId(): ?int { return $this->id; }
@@ -49,6 +52,7 @@ class Story implements JsonSerializable
     public function getCreatedAt(): string { return $this->createdAt; }
     public function getUpdatedAt(): ?string { return $this->updatedAt; }
     public function getStatus(): ?string { return $this->status; }
+    public function getUserName(): ?string { return $this->userName; }
     public function setStatus(?string $status): void { $this->status = $status; }
 
     #[\ReturnTypeWillChange]
@@ -64,6 +68,7 @@ class Story implements JsonSerializable
             'createdAt' => $this->createdAt,
             'updatedAt' => $this->updatedAt,
             'status' => $this->status,
+            'userName' => $this->userName,
         ];
     }
 } 
