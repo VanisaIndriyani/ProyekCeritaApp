@@ -133,7 +133,7 @@ class StoryController extends BaseController
                 $coverImage,
                 date('Y-m-d H:i:s'),
                 null,
-                $data['status'] ?? 'published'
+                $data['status'] ?? 'pending'
             );
 
             $savedStory = $this->storyRepository->save($story);
@@ -179,6 +179,12 @@ class StoryController extends BaseController
             }
             if (isset($data['category'])) {
                 $story->setCategory($data['category']);
+            }
+
+            // Saat update, jangan ubah status ke published secara otomatis
+            // Pastikan status tetap dari data lama atau dari input jika ada
+            if (isset($data['status'])) {
+                $story->setStatus($data['status']);
             }
 
             $updatedStory = $this->storyRepository->save($story);

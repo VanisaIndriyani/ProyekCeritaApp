@@ -93,7 +93,7 @@ return function (\Slim\App $app) {
     $app->group('', function (Group $group) {
         // User dashboard
         $group->get('/user', function (Request $request, Response $response) {
-            $viewFile = __DIR__ . '/../../resources/views/user/profile.php';
+            $viewFile = __DIR__ . '/../../resources/views/user/profile-php.php';
             if (file_exists($viewFile)) {
                 ob_start();
                 $currentPage = 'user'; // Set current page for navigation highlighting
@@ -121,6 +121,9 @@ return function (\Slim\App $app) {
         $group->post('/user/delete/{id}', [UserStoryFormController::class, 'deleteStorySubmit']);
     })->add(AuthMiddleware::class);
     
+    $app->get('/user/profile', [\App\Application\Controllers\UserController::class, 'profile']);
+    $app->post('/user/profile', [\App\Application\Controllers\UserController::class, 'profile']);
+    
     // Admin Pages (Require admin authentication)
     $app->group('', function (Group $group) {
         $group->get('/admin', function (Request $request, Response $response) {
@@ -132,11 +135,48 @@ return function (\Slim\App $app) {
                 $response->getBody()->write($html);
                 return $response->withHeader('Content-Type', 'text/html');
             }
-            
-            // Fallback ke file lama jika view baru belum ada
             $html = file_get_contents(__DIR__ . '/../../public/admin.html');
             $response->getBody()->write($html);
             return $response->withHeader('Content-Type', 'text/html');
         });
+        $group->get('/admin/users', function (Request $request, Response $response) {
+            $viewFile = __DIR__ . '/../../resources/views/admin/users.php';
+            if (file_exists($viewFile)) {
+                ob_start();
+                include $viewFile;
+                $html = ob_get_clean();
+                $response->getBody()->write($html);
+                return $response->withHeader('Content-Type', 'text/html');
+            }
+            $response->getBody()->write('<h2>Halaman Kelola User tidak ditemukan.</h2>');
+            return $response->withHeader('Content-Type', 'text/html');
+        });
+        $group->get('/admin/stories', function (Request $request, Response $response) {
+            $viewFile = __DIR__ . '/../../resources/views/admin/stories.php';
+            if (file_exists($viewFile)) {
+                ob_start();
+                include $viewFile;
+                $html = ob_get_clean();
+                $response->getBody()->write($html);
+                return $response->withHeader('Content-Type', 'text/html');
+            }
+            $response->getBody()->write('<h2>Halaman Kelola Cerita tidak ditemukan.</h2>');
+            return $response->withHeader('Content-Type', 'text/html');
+        });
+        $group->map(['GET', 'POST'], '/admin/about', function (Request $request, Response $response) {
+            $viewFile = __DIR__ . '/../../resources/views/admin/about.php';
+            if (file_exists($viewFile)) {
+                ob_start();
+                include $viewFile;
+                $html = ob_get_clean();
+                $response->getBody()->write($html);
+                return $response->withHeader('Content-Type', 'text/html');
+            }
+            $response->getBody()->write('<h2>Halaman Kelola Tim tidak ditemukan.</h2>');
+            return $response->withHeader('Content-Type', 'text/html');
+        });
+        // Route detail cerita admin
+        $group->get('/admin/stories/show/{id}', [\App\Application\Controllers\Admin\AdminController::class, 'showStory']);
+        $group->post('/admin/stories', [\App\Application\Controllers\Admin\AdminController::class, 'listStories']);
     })->add(AdminMiddleware::class);
 };

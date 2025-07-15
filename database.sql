@@ -41,3 +41,11 @@ INSERT INTO stories (userId, title, content, category, status, createdAt) VALUES
 (2, 'Tips Mendapat Magang Impian', 'Dari ratusan lamaran, akhirnya aku diterima magang di perusahaan impian. Ini tips yang bisa diterapkan untuk meningkatkan peluang diterima magang. Pertama, riset mendalam tentang perusahaan. Kedua, sesuaikan CV dengan job description. Ketiga, latih soft skill terutama komunikasi.', 'karir', 'published', '2024-01-10 14:20:00'),
 (2, 'Pengalaman Organisasi Kemahasiswaan', 'Bagaimana organisasi mengubah hidupku? Dari yang pemalu jadi lebih percaya diri dan punya banyak teman. Leadership skill juga berkembang pesat. Mulai dari event organizer kecil-kecilan sampai memimpin divisi dengan puluhan anggota.', 'kehidupan', 'published', '2024-01-05 09:15:00'),
 (2, 'Belajar Programming dari Nol', 'Journey belajar programming memang penuh lika-liku. Mulai dari HTML, CSS, JavaScript, hingga framework modern. Yang penting konsisten latihan coding setiap hari dan jangan takut untuk bertanya atau mencari bantuan di komunitas developer.', 'teknologi', 'published', '2024-01-12 16:45:00'); 
+
+-- Tabel untuk data tim admin
+CREATE TABLE IF NOT EXISTS team (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama VARCHAR(100) NOT NULL,
+    jabatan VARCHAR(100) NOT NULL,
+    foto VARCHAR(255) DEFAULT NULL
+); 

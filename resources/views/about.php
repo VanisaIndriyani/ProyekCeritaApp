@@ -87,36 +87,32 @@ ob_start();
             <div class="container">
                 <h2 class="section-title">Tim Kami</h2>
                 <div class="team-grid">
-                    <div class="team-member">
-                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Vanisa Indriyani" class="team-avatar">
-                        <h4>Vanisa Indriyani</h4>
-                        <p>Project Manager</p>
-                    </div>
-                    <div class="team-member">
-                        <img src="https://randomuser.me/api/portraits/women/66.jpg" alt="Triyas Nurlita Nurul Adha" class="team-avatar">
-                        <h4>Triyas Nurlita Nurul Adha</h4>
-                        <p>UI/UX Designer</p>
-                    </div>
-                    <div class="team-member">
-                        <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Gede Aryamulya Putra Kumara" class="team-avatar">
-                        <h4>Gede Aryamulya Putra Kumara</h4>
-                        <p>Frontend Developer</p>
-                    </div>
-                    <div class="team-member">
-                        <img src="https://randomuser.me/api/portraits/men/68.jpg" alt="Khairunnas" class="team-avatar">
-                        <h4>Khairunnas</h4>
-                        <p>Backend Developer</p>
-                    </div>
-                    <div class="team-member">
-                        <img src="https://randomuser.me/api/portraits/men/69.jpg" alt="Abdul Rahman Wahid" class="team-avatar">
-                        <h4>Abdul Rahman Wahid</h4>
-                        <p>Full Stack Developer</p>
-                    </div>
-                    <div class="team-member">
-                        <img src="https://randomuser.me/api/portraits/men/70.jpg" alt="Bagus Nur Solayman" class="team-avatar">
-                        <h4>Bagus Nur Solayman</h4>
-                        <p>DevOps Engineer</p>
-                    </div>
+                    <?php
+                    // Ambil data tim dari database
+                    try {
+                        $pdo = new PDO('mysql:host=localhost;dbname=cerita_app;charset=utf8mb4', 'root', '');
+                        $stmt = $pdo->query('SELECT * FROM team ORDER BY id ASC');
+                        $tim = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    } catch (Exception $e) {
+                        $tim = [];
+                    }
+                    if (empty($tim)) {
+                        echo '<p style="color:#888;text-align:center;width:100%;">Belum ada data tim.</p>';
+                    } else {
+                        foreach ($tim as $anggota) {
+                            $foto = $anggota['foto'] ?? '';
+                            if (!$foto) {
+                                // Avatar default berdasarkan gender/jabatan (random)
+                                $foto = 'https://randomuser.me/api/portraits/lego/' . ($anggota['id'] % 10) . '.jpg';
+                            }
+                            echo '<div class="team-member">';
+                            echo '<img src="' . htmlspecialchars($foto) . '" alt="' . htmlspecialchars($anggota['nama']) . '" class="team-avatar">';
+                            echo '<h4>' . htmlspecialchars($anggota['nama']) . '</h4>';
+                            echo '<p>' . htmlspecialchars($anggota['jabatan']) . '</p>';
+                            echo '</div>';
+                        }
+                    }
+                    ?>
                 </div>
             </div>
         </div>

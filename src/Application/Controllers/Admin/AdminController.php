@@ -34,11 +34,28 @@ class AdminController extends BaseController
         $this->response = func_get_args()[1] ?? $this->response;
         $this->args = func_get_args()[2] ?? $this->args;
 
-        $stories = $this->storyRepository->findAll();
-        
-        return $this->respondWithData([
-            'stories' => $stories
-        ]);
+        // Handle approve (POST)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['approve_id'])) {
+            $approveId = (int)$_POST['approve_id'];
+            $story = $this->storyRepository->findStoryOfId($approveId);
+            if ($story) {
+                $story->setStatus('published');
+                $this->storyRepository->update($story);
+                $_SESSION['success'] = 'Cerita berhasil dipublish!';
+            } else {
+                $_SESSION['error'] = 'Cerita tidak ditemukan.';
+            }
+            header('Location: /admin/stories');
+            exit;
+        }
+
+        $stories = $this->storyRepository->findAllAdmin();
+        extract(['stories' => $stories]);
+        ob_start();
+        include __DIR__ . '/../../../../resources/views/admin/stories.php';
+        $html = ob_get_clean();
+        $this->response->getBody()->write($html);
+        return $this->response->withHeader('Content-Type', 'text/html');
     }
 
     /**
@@ -58,12 +75,8 @@ class AdminController extends BaseController
         }
 
         try {
-            // Logic untuk publish story
-            // Asumsi ada method setPublished di Story
-            if (method_exists($story, 'setPublished')) {
-                $story->setPublished(true);
-                $this->storyRepository->save($story);
-            }
+            $story->setStatus('published');
+            $this->storyRepository->update($story);
             
             $this->logInfo("Story published", ['story_id' => $storyId]);
             
@@ -193,6 +206,30 @@ class AdminController extends BaseController
             'success' => true,
             'message' => 'About content berhasil diupdate'
         ]);
+    }
+
+    public function showStory(): Response
+    {
+        $this->request = func_get_args()[0] ?? $this->request;
+        $this->response = func_get_args()[1] ?? $this->response;
+        $this->args = func_get_args()[2] ?? $this->args;
+
+        $storyId = $this->args['id'] ?? null;
+        if (!$storyId) {
+            $this->response->getBody()->write('ID cerita tidak ditemukan');
+            return $this->response->withStatus(404)->withHeader('Content-Type', 'text/html');
+        }
+        $story = $this->storyRepository->findStoryOfId((int)$storyId);
+        if (!$story) {
+            $this->response->getBody()->write('Cerita tidak ditemukan');
+            return $this->response->withStatus(404)->withHeader('Content-Type', 'text/html');
+        }
+        extract(['story' => $story]);
+        ob_start();
+        include __DIR__ . '/../../../../resources/views/admin/story-detail.php';
+        $html = ob_get_clean();
+        $this->response->getBody()->write($html);
+        return $this->response->withHeader('Content-Type', 'text/html');
     }
 
     protected function action(): Response

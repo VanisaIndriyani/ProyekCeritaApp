@@ -59,7 +59,7 @@ class UserStoryFormController
                 $coverImage,                   // coverImage
                 date('Y-m-d H:i:s'),          // createdAt
                 null,                          // updatedAt
-                'published'                    // status
+                'pending'                    // status
             );
 
             $storyId = $this->storyRepository->create($story);
@@ -134,7 +134,7 @@ class UserStoryFormController
                 $coverImage,                   // coverImage
                 $story->getCreatedAt(),        // createdAt (keep original)
                 date('Y-m-d H:i:s'),          // updatedAt
-                'published'                    // status
+                'pending'                    // status
             );
 
             // Update in database

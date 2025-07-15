@@ -139,7 +139,7 @@ ob_start();
                     Jelajahi Cerita
                 </button>
                 <?php if ($isAuthenticated): ?>
-                    <button class="btn btn-secondary" onclick="window.location.href='/user'">
+                    <button class="btn btn-secondary" onclick="window.location.href='/user/create'">
                         <i class="fas fa-plus"></i>
                         Mulai Buat Cerita
                     </button>

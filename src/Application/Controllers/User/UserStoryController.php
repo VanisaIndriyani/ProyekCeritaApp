@@ -160,7 +160,7 @@ class UserStoryController
             }
 
             // Set status to published directly (no draft)
-            $status = 'published';
+            $status = 'pending';
 
             // Create story
             $story = new Story(
@@ -231,7 +231,7 @@ class UserStoryController
             }
 
             // Set status to published directly (no draft)
-            $status = 'published';
+            $status = $story->getStatus();
 
             // Update story properties
             $updatedStory = new Story(

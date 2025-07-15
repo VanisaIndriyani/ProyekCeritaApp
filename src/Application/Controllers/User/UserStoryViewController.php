@@ -81,4 +81,22 @@ class UserStoryViewController
         $response->getBody()->write('Create form not found');
         return $response->withStatus(404);
     }
+
+    public function dashboard($request, $response, $args = [])
+    {
+        $user = AuthHelper::getCurrentUser();
+        if (!$user) {
+            return $response->withHeader('Location', '/login')->withStatus(302);
+        }
+        $viewFile = __DIR__ . '/../../../../resources/views/user/user.php';
+        if (!file_exists($viewFile)) {
+            $viewFile = __DIR__ . '/../../../../public/user.html';
+        }
+        ob_start();
+        $currentPage = 'user';
+        include $viewFile;
+        $html = ob_get_clean();
+        $response->getBody()->write($html);
+        return $response->withHeader('Content-Type', 'text/html');
+    }
 }

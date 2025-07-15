@@ -143,6 +143,28 @@ class UserController extends BaseController
         }
     }
 
+    public function profile(): Response
+    {
+        $this->request = func_get_args()[0] ?? $this->request;
+        $this->response = func_get_args()[1] ?? $this->response;
+        $this->args = func_get_args()[2] ?? $this->args;
+
+        $user = \App\Application\Helpers\AuthHelper::getCurrentUser();
+        if (!$user) {
+            return $this->response->withHeader('Location', '/login')->withStatus(302);
+        }
+        extract(['user' => $user]);
+        ob_start();
+        $viewPath = realpath(__DIR__ . '/../../../../resources/views/user/profile.php');
+        if (!$viewPath) {
+            die('❌ File view tidak ditemukan: ' . __DIR__ . '/../../../../resources/views/user/profile.php');
+        }
+        include $viewPath;
+        $html = ob_get_clean();
+        $this->response->getBody()->write($html);
+        return $this->response->withHeader('Content-Type', 'text/html');
+    }
+
     protected function action(): Response
     {
         // This method won't be called directly

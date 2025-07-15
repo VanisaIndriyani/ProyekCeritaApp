@@ -47,7 +47,7 @@ $isAdmin = AuthHelper::isAdmin();
                         </button>
                         
                         <div class="dropdown-menu" id="profileDropdown">
-                            <a href="/user" class="dropdown-item">
+                            <a href="/user/profile" class="dropdown-item">
                                 <i class="fas fa-user"></i>
                                 Profile Setting
                             </a>

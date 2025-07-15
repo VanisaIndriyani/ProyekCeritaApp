@@ -19,22 +19,12 @@ class MySQLStoryRepository implements StoryRepository
 
     public function findAll(): array
     {
-        // Check if status column exists first
-        try {
-            $sql = "SELECT s.*, u.nama as userName FROM stories s 
-                    LEFT JOIN users u ON s.userId = u.id 
-                    WHERE s.status = 'published' 
-                    ORDER BY s.createdAt DESC";
-            $stmt = $this->pdo->query($sql);
-        } catch (\PDOException $e) {
-            // Fallback if status column doesn't exist yet
-            $sql = "SELECT s.*, u.nama as userName FROM stories s 
-                    LEFT JOIN users u ON s.userId = u.id 
-                    ORDER BY s.createdAt DESC";
-            $stmt = $this->pdo->query($sql);
-        }
-        
-        $rows = $stmt->fetchAll();
+        $sql = "SELECT s.*, u.nama as userName FROM stories s 
+                LEFT JOIN users u ON s.userId = u.id 
+                WHERE s.status = 'published' 
+                ORDER BY s.createdAt DESC";
+        $stmt = $this->pdo->query($sql);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return array_map([$this, 'rowToStory'], $rows);
     }
 
@@ -57,7 +47,7 @@ class MySQLStoryRepository implements StoryRepository
             $story->getCategory(),
             $story->getCoverImage(),
             $story->getCreatedAt(),
-            $story->getStatus() ?? 'published'
+            $story->getStatus() ?? 'pending'
         ]);
         return (int)$this->pdo->lastInsertId();
     }
@@ -103,7 +93,7 @@ class MySQLStoryRepository implements StoryRepository
         $stmt->bindValue(':category', $story->getCategory());
         $stmt->bindValue(':coverImage', $story->getCoverImage());
         $stmt->bindValue(':updatedAt', date('Y-m-d H:i:s'));
-        $stmt->bindValue(':status', $story->getStatus() ?? 'published');
+        $stmt->bindValue(':status', $story->getStatus() ?? 'pending');
         $stmt->execute();
         return $story;
     }
@@ -124,8 +114,8 @@ class MySQLStoryRepository implements StoryRepository
 
     public function findAllAdmin(): array
     {
-        $stmt = $this->pdo->query("SELECT * FROM stories ORDER BY createdAt DESC");
-        $rows = $stmt->fetchAll();
+        $stmt = $this->pdo->query("SELECT s.*, u.nama as userName FROM stories s LEFT JOIN users u ON s.userId = u.id ORDER BY s.createdAt DESC");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return array_map([$this, 'rowToStory'], $rows);
     }
 
@@ -140,7 +130,7 @@ class MySQLStoryRepository implements StoryRepository
             $row['coverImage'] ?? null,
             $row['createdAt'] ?? null,
             $row['updatedAt'] ?? null,
-            $row['status'] ?? 'published',
+            $row['status'] ?? 'pending',
             $row['userName'] ?? null
         );
     }
