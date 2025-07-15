@@ -14,11 +14,6 @@ use Psr\Container\ContainerInterface;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-// Redirect ke login jika mengakses root "/" atau "/index.php"
-if ($_SERVER['REQUEST_URI'] === '/' || $_SERVER['REQUEST_URI'] === '/index.php') {
-    header('Location: /login.html');
-    exit;
-}
 
 // Instantiate PHP-DI ContainerBuilder
 $containerBuilder = new ContainerBuilder();
