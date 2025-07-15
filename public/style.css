@@ -51,7 +51,7 @@ main {
     margin-top: 1.5rem;
 }
 
-.story-card {
+.old-story-card {
     background: rgba(255,255,255,0.12);
     border-radius: 18px;
     box-shadow: 0 2px 12px rgba(80,0,120,0.10);
@@ -61,22 +61,22 @@ main {
     flex-direction: column;
     transition: box-shadow 0.2s, transform 0.2s;
 }
-.story-card:hover {
+.old-story-card:hover {
     box-shadow: 0 6px 24px rgba(80,0,120,0.18);
     transform: translateY(-4px) scale(1.02);
 }
-.story-title {
+.old-story-title {
     font-size: 1.3rem;
     font-weight: bold;
     margin-bottom: 0.5em;
     color: #fff;
 }
-.story-meta {
+.old-story-meta {
     font-size: 0.95em;
     color: #e0e0ff;
     margin-bottom: 0.7em;
 }
-.story-content {
+.old-story-content {
     font-size: 1.05em;
     margin-bottom: 0.7em;
 }
