@@ -1,42 +1,87 @@
-# Slim Framework 4 Skeleton Application
+# 📚 ProyekCeritaApp
+> Kelompok 6 - Project UAS dengan Slim 4
 
-[![Coverage Status](https://coveralls.io/repos/github/slimphp/Slim-Skeleton/badge.svg?branch=master)](https://coveralls.io/github/slimphp/Slim-Skeleton?branch=master)
 
-Use this skeleton application to quickly setup and start working on a new Slim Framework 4 application. This application uses the latest Slim 4 with Slim PSR-7 implementation and PHP-DI container implementation. It also uses the Monolog logger.
+Aplikasi **ProyekCeritaApp** adalah website sederhana yang dibangun menggunakan **Slim Framework 4**, dikembangkan oleh **Kelompok 6** untuk memenuhi tugas Akhir.
 
-This skeleton application was built for Composer. This makes setting up a new Slim Framework application quick and easy.
+---
 
-## Install the Application
+## ✍️ Tentang Website Ini
 
-Run this command from the directory in which you want to install your new Slim Framework application. You will require PHP 7.4 or newer.
+Website ini adalah **platform cerita mahasiswa** bernama **Cerita App Mahasiswa**, yang dibuat khusus untuk memfasilitasi mahasiswa dalam mengekspresikan ide, pengalaman, dan kisah inspiratif mereka.  
 
+Dengan aplikasi ini, diharapkan dapat terbentuk komunitas berbagi cerita yang positif dan mendukung kreativitas.
+
+### 🚀 Fitur Utama
+- 🎓 **Registrasi Mahasiswa**  
+  Mahasiswa dapat mendaftarkan akun mereka untuk mulai menggunakan aplikasi.
+  
+- 📝 **Menulis & Membagikan Cerita**  
+  Setiap mahasiswa dapat menulis cerita, pengalaman, atau pemikiran mereka, lalu membagikannya kepada pengguna lain.
+  
+- 💬 **Platform Sharing**  
+  Cerita-cerita yang dipublikasikan akan tampil di halaman utama, sehingga bisa dibaca dan menginspirasi mahasiswa lainnya.
+
+---
+
+## 🚀 Cara Install & Setup
+
+Berikut langkah-langkah untuk menjalankan project ini di lokal:
+
+### 🧩 1. Clone Repository
+Clone project ini ke komputer kamu.
 ```bash
-composer create-project slim/slim-skeleton [my-app-name]
+git clone https://github.com/VanisaIndriyani/ProyekCeritaApp.git
 ```
+📌 *Ini akan mendownload seluruh source code ke folder `ProyekCeritaApp`.*
 
-Replace `[my-app-name]` with the desired directory name for your new application. You'll want to:
+---
 
-* Point your virtual host document root to your new application's `public/` directory.
-* Ensure `logs/` is web writable.
-
-To run the application in development, you can run these commands 
-
+### 📂 2. Masuk ke folder project
+Pindah ke direktori project.
 ```bash
-cd [my-app-name]
+cd ProyekCeritaApp
+```
+📌 *Supaya semua perintah berikutnya dijalankan dari folder project.*
+
+---
+
+### 🛠 3. Install dependency PHP
+Jalankan composer untuk install semua dependency Slim 4.
+```bash
+composer install
+```
+📌 *Ini akan mengunduh semua library yang dibutuhkan, seperti Slim Framework.*
+
+---
+
+### 🗄 4. Buat database
+- Buat database baru bernama `cerita_app` di MySQL.
+- Lalu import file `database.sql` ke dalamnya.
+  - Bisa dengan cara klik tab **SQL**, lalu copy-paste seluruh isi file `database.sql`, lalu klik **Go**.
+
+📌 *Ini akan membuat semua tabel yang diperlukan oleh aplikasi.*
+
+---
+
+### ▶️ 5. Jalankan aplikasi
+Untuk menjalankan local server, gunakan:
+```bash
 composer start
 ```
+📌 *Secara default akan jalan di `http://localhost:8080`.*
 
-Or you can use `docker-compose` to run the app with `docker`, so you can run these commands:
-```bash
-cd [my-app-name]
-docker-compose up -d
-```
-After that, open `http://localhost:8080` in your browser.
+---
 
-Run this command in the application directory to run the test suite
+## 👥 Contributors
 
-```bash
-composer test
-```
+| No | Nama | GitHub |
+|----|------|--------|
+| 1 | Bagus Nur Solayman | [@bagusumby](https://github.com/bagusumby) |
 
-That's it! Now go build something cool.
+---
+
+## ❤️ Terima Kasih!
+Semoga project ini bermanfaat dan mempermudah tugas UAS kita.
+
+---
