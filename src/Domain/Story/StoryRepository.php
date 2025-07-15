@@ -13,9 +13,15 @@ interface StoryRepository
 
     /**
      * @param int $id
-     * @return Story
+     * @return Story|null
      */
-    public function findStoryOfId(int $id): Story;
+    public function findById(int $id): ?Story;
+
+    /**
+     * @param Story $story
+     * @return int Story ID
+     */
+    public function create(Story $story): int;
 
     /**
      * @param Story $story

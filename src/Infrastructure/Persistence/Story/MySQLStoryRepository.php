@@ -19,18 +19,54 @@ class MySQLStoryRepository implements StoryRepository
 
     public function findAll(): array
     {
-        $stmt = $this->pdo->query("SELECT * FROM stories WHERE status = 'published' ORDER BY createdAt DESC");
+        // Check if status column exists first
+        try {
+            $sql = "SELECT s.*, u.nama as userName FROM stories s 
+                    LEFT JOIN users u ON s.userId = u.id 
+                    WHERE s.status = 'published' 
+                    ORDER BY s.createdAt DESC";
+            $stmt = $this->pdo->query($sql);
+        } catch (\PDOException $e) {
+            // Fallback if status column doesn't exist yet
+            $sql = "SELECT s.*, u.nama as userName FROM stories s 
+                    LEFT JOIN users u ON s.userId = u.id 
+                    ORDER BY s.createdAt DESC";
+            $stmt = $this->pdo->query($sql);
+        }
+        
         $rows = $stmt->fetchAll();
         return array_map([$this, 'rowToStory'], $rows);
     }
 
-    public function findStoryOfId(int $id): Story
+    public function findById(int $id): ?Story
     {
         $stmt = $this->pdo->prepare("SELECT * FROM stories WHERE id = ?");
         $stmt->execute([$id]);
         $row = $stmt->fetch();
-        if (!$row) throw new \Exception('Story not found');
+        if (!$row) return null;
         return $this->rowToStory($row);
+    }
+
+    public function create(Story $story): int
+    {
+        $stmt = $this->pdo->prepare("INSERT INTO stories (userId, title, content, category, coverImage, createdAt, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([
+            $story->getUserId(),
+            $story->getTitle(),
+            $story->getContent(),
+            $story->getCategory(),
+            $story->getCoverImage(),
+            $story->getCreatedAt(),
+            $story->getStatus() ?? 'published'
+        ]);
+        return (int)$this->pdo->lastInsertId();
+    }
+
+    public function findStoryOfId(int $id): Story
+    {
+        $story = $this->findById($id);
+        if (!$story) throw new \Exception('Story not found');
+        return $story;
     }
 
     public function save(Story $story): Story
@@ -53,7 +89,6 @@ class MySQLStoryRepository implements StoryRepository
     {
         $stmt = $this->pdo->prepare("
             UPDATE stories SET
-                userId = :userId,
                 title = :title,
                 content = :content,
                 category = :category,
@@ -63,13 +98,12 @@ class MySQLStoryRepository implements StoryRepository
             WHERE id = :id
         ");
         $stmt->bindValue(':id', $story->getId(), PDO::PARAM_INT);
-        $stmt->bindValue(':userId', $story->getUserId(), PDO::PARAM_INT);
         $stmt->bindValue(':title', $story->getTitle());
         $stmt->bindValue(':content', $story->getContent());
         $stmt->bindValue(':category', $story->getCategory());
         $stmt->bindValue(':coverImage', $story->getCoverImage());
-        $stmt->bindValue(':updatedAt', $story->getUpdatedAt());
-        $stmt->bindValue(':status', $story->getStatus() ?? 'pending');
+        $stmt->bindValue(':updatedAt', date('Y-m-d H:i:s'));
+        $stmt->bindValue(':status', $story->getStatus() ?? 'published');
         $stmt->execute();
         return $story;
     }
@@ -102,11 +136,12 @@ class MySQLStoryRepository implements StoryRepository
             (int)$row['userId'],
             $row['title'],
             $row['content'],
-            $row['category'],
-            $row['coverImage'],
-            $row['createdAt'],
+            $row['category'] ?? null,
+            $row['coverImage'] ?? null,
+            $row['createdAt'] ?? null,
             $row['updatedAt'] ?? null,
-            $row['status'] ?? null
+            $row['status'] ?? 'published',
+            $row['userName'] ?? null
         );
     }
 } 
