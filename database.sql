@@ -29,6 +29,15 @@ CREATE TABLE IF NOT EXISTS stories (
     content TEXT NOT NULL,
     category VARCHAR(50),
     coverImage VARCHAR(255),
-    createdAt DATETIME,
-    updatedAt DATETIME
+    status VARCHAR(20) DEFAULT 'published',
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
 ); 
+
+-- Sample stories data
+INSERT INTO stories (userId, title, content, category, status, createdAt) VALUES
+(2, 'Perjuangan Skripsi di Tengah Pandemi', 'Menghadapi skripsi saat pandemi memang penuh tantangan. Tapi aku belajar banyak tentang manajemen waktu dan mental. Dari yang awalnya bingung mau mulai dari mana, hingga akhirnya bisa menyelesaikan dengan baik. Prosesnya memang tidak mudah, tapi pengalaman ini mengajarkan banyak hal berharga tentang kedisiplinan dan konsistensi.', 'akademik', 'published', '2024-01-15 10:30:00'),
+(2, 'Tips Mendapat Magang Impian', 'Dari ratusan lamaran, akhirnya aku diterima magang di perusahaan impian. Ini tips yang bisa diterapkan untuk meningkatkan peluang diterima magang. Pertama, riset mendalam tentang perusahaan. Kedua, sesuaikan CV dengan job description. Ketiga, latih soft skill terutama komunikasi.', 'karir', 'published', '2024-01-10 14:20:00'),
+(2, 'Pengalaman Organisasi Kemahasiswaan', 'Bagaimana organisasi mengubah hidupku? Dari yang pemalu jadi lebih percaya diri dan punya banyak teman. Leadership skill juga berkembang pesat. Mulai dari event organizer kecil-kecilan sampai memimpin divisi dengan puluhan anggota.', 'kehidupan', 'published', '2024-01-05 09:15:00'),
+(2, 'Belajar Programming dari Nol', 'Journey belajar programming memang penuh lika-liku. Mulai dari HTML, CSS, JavaScript, hingga framework modern. Yang penting konsisten latihan coding setiap hari dan jangan takut untuk bertanya atau mencari bantuan di komunitas developer.', 'teknologi', 'published', '2024-01-12 16:45:00'); 
