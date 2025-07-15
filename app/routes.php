@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Application\Actions\User\ListUsersAction;
 use App\Application\Actions\User\ViewUserAction;
+use App\Application\Actions\User\UpdateUserAction; // Baris ini ditambahkan
 use App\Application\Actions\Story\ListStoriesAction;
 use App\Application\Actions\Story\ViewStoryAction;
 use App\Application\Actions\Story\CreateStoryAction;
@@ -35,6 +36,7 @@ return function (App $app) {
     $app->group('/users', function (Group $group) {
         $group->get('', ListUsersAction::class);
         $group->get('/{id}', ViewUserAction::class);
+        $group->map(['PUT', 'POST'], '/{id}', UpdateUserAction::class); // Baris ini ditambahkan
     });
 
     $app->group('/stories', function (Group $group) {

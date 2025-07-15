@@ -17,4 +17,10 @@ interface UserRepository
      * @throws UserNotFoundException
      */
     public function findUserOfId(int $id): User;
+
+    /**
+     * @param User $user
+     * @return User
+     */
+    public function update(User $user): User; // Baris baru ini ditambahkan
 }

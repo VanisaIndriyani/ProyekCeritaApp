@@ -66,6 +66,24 @@ class MySQLUserRepository implements UserRepository
         return null;
     }
 
+    /**
+     * Memperbarui data pengguna di database.
+     * @param User $user Objek User yang akan diperbarui.
+     * @return User Objek User yang telah diperbarui.
+     */
+    public function update(User $user): User
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET username = ?, nama = ?, email = ?, role = ? WHERE id = ?");
+        $stmt->execute([
+            $user->getUsername(),
+            $user->getFirstName(), // Ini adalah kolom 'nama' di DB
+            $user->getLastName(),  // Ini adalah kolom 'email' di DB
+            $user->getRole(),
+            $user->getId()
+        ]);
+        return $user;
+    }
+
     private function rowToUser(array $row): User
     {
         return new User(
@@ -76,4 +94,4 @@ class MySQLUserRepository implements UserRepository
             $row['role'] ?? 'user'
         );
     }
-} 
+}

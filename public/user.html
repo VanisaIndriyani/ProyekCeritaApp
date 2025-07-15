@@ -88,6 +88,20 @@
                     </tr>
                 </tbody>
             </table>
+
+            <!-- Bagian Profil Saya yang baru -->
+            <div class="dashboard-header" style="margin-top: 3em;">
+                <h2>Profil Saya</h2>
+                <button class="add-story-btn" id="openProfileModalBtn">Edit Profil</button>
+            </div>
+            <div class="profile-display" style="background:#f7f8fa; border-radius:12px; padding:1.5em; color:#23235b;">
+                <p><strong>Username:</strong> <span id="profileUsername"></span></p>
+                <p><strong>Nama Lengkap:</strong> <span id="profileNama"></span></p>
+                <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+                <p><strong>Role:</strong> <span id="profileRole"></span></p>
+            </div>
+            <!-- Akhir Bagian Profil Saya -->
+
         </div>
         <!-- Modal Tambah Cerita -->
         <div id="modal" class="modal">
@@ -112,6 +126,26 @@
                 </form>
             </div>
         </div>
+
+        <!-- Modal Edit Profil yang baru -->
+        <div id="profileModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeProfileModalBtn">&times;</span>
+                <h2>Edit Profil</h2>
+                <form class="story-form" id="profileForm">
+                    <label>Username</label>
+                    <input type="text" name="username" id="editUsername" required>
+                    <label>Nama Lengkap</label>
+                    <input type="text" name="nama" id="editNama" required>
+                    <label>Email</label>
+                    <input type="email" name="email" id="editEmail" required>
+                    <!-- Role tidak dapat diedit oleh pengguna -->
+                    <button type="submit">Simpan Perubahan</button>
+                </form>
+            </div>
+        </div>
+        <!-- Akhir Modal Edit Profil -->
+
     </main>
     <footer style="text-align:center;margin-top:2.5em;padding-bottom:1.5em;color:#a259ff;font-size:1.05em;">
         <p>&copy; 2025 Cerita Mahasiswa. All rights reserved.</p>
@@ -268,6 +302,84 @@
     if (logoutBtn && !isLoggedIn) {
         logoutBtn.style.display = 'none';
     }
+
+    // Logika Modal Profil yang baru
+    const profileModal = document.getElementById('profileModal');
+    const openProfileModalBtn = document.getElementById('openProfileModalBtn');
+    const closeProfileModalBtn = document.getElementById('closeProfileModalBtn');
+    const profileForm = document.getElementById('profileForm');
+
+    openProfileModalBtn.onclick = async () => {
+        // Ambil data pengguna saat ini untuk mengisi formulir
+        try {
+            const res = await fetch(`/users/${userId}`);
+            const resJson = await res.json();
+            const user = resJson.data;
+            if (user) {
+                document.getElementById('editUsername').value = user.username;
+                document.getElementById('editNama').value = user.firstName; // 'nama' di DB
+                document.getElementById('editEmail').value = user.lastName; // 'email' di DB
+                profileModal.style.display = 'flex';
+            } else {
+                showNotif('Gagal memuat data profil.', true);
+            }
+        } catch (err) {
+            showNotif('Error memuat data profil: ' + err.message, true);
+        }
+    };
+    closeProfileModalBtn.onclick = () => { profileModal.style.display = 'none'; };
+    // Tambahkan ke window.onclick untuk menutup modal profil
+    window.onclick = (e) => {
+        if (e.target === modal) modal.style.display = 'none';
+        if (e.target === profileModal) profileModal.style.display = 'none'; // Ditambahkan untuk modal profil
+    };
+
+    // Fungsi untuk memuat dan menampilkan profil pengguna
+    async function loadUserProfile() {
+        try {
+            const res = await fetch(`/users/${userId}`);
+            const resJson = await res.json();
+            const user = resJson.data;
+            if (user) {
+                document.getElementById('profileUsername').textContent = user.username;
+                document.getElementById('profileNama').textContent = user.firstName;
+                document.getElementById('profileEmail').textContent = user.lastName;
+                document.getElementById('profileRole').textContent = user.role;
+            } else {
+                showNotif('Gagal memuat data profil.', true);
+            }
+        } catch (err) {
+            showNotif('Error memuat data profil: ' + err.message, true);
+        }
+    }
+
+    // Tangani pengiriman formulir profil
+    profileForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(profileForm);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const res = await fetch(`/users/${userId}`, { // Gunakan PUT/POST untuk pembaruan
+                method: 'POST', // Menggunakan POST dengan _method=PUT sesuai Slim skeleton
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...data, _method: 'PUT' }) // Tambahkan _method untuk Slim
+            });
+            const resJson = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                const msg = resJson?.error?.description || 'Gagal mengupdate profil';
+                throw new Error(msg);
+            }
+            showNotif('Profil berhasil diupdate!');
+            profileModal.style.display = 'none';
+            loadUserProfile(); // Muat ulang data profil
+        } catch (err) {
+            showNotif(err.message || 'Gagal mengupdate profil', true);
+        }
+    };
+
+    // Muat profil pengguna saat halaman dimuat
+    loadUserProfile();
     </script>
 </body>
-</html> 
+</html>
