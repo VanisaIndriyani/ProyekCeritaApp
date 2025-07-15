@@ -40,6 +40,27 @@ class MySQLUserRepository implements UserRepository
         $row = $stmt->fetch();
         return $row ? $this->rowToUser($row) : null;
     }
+    
+    public function findByEmail(string $email): ?User
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        $row = $stmt->fetch();
+        return $row ? $this->rowToUser($row) : null;
+    }
+    
+    public function create(array $userData): int
+    {
+        $stmt = $this->pdo->prepare("INSERT INTO users (nama, email, username, password_hash, role) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([
+            $userData['nama'],
+            $userData['email'],
+            $userData['username'],
+            $userData['password'],
+            $userData['role']
+        ]);
+        return (int)$this->pdo->lastInsertId();
+    }
 
     public function save(User $user, string $passwordHash): User
     {
@@ -72,8 +93,10 @@ class MySQLUserRepository implements UserRepository
             (int)$row['id'],
             $row['username'],
             $row['nama'] ?? '',
+            '', // lastName (kosong karena nama sudah fullname)
+            $row['role'] ?? 'user',
             $row['email'] ?? '',
-            $row['role'] ?? 'user'
+            $row['password_hash'] ?? ''
         );
     }
 } 
