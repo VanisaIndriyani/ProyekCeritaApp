@@ -78,6 +78,8 @@ composer start
 | No | Nama | GitHub |
 |----|------|--------|
 | 1 | Bagus Nur Solayman | [@bagusumby](https://github.com/bagusumby) |
+| 2 | Vanisa Indriyanu | [@VanisaIndriyani](https://github.com/VanisaIndriyani) |
+| 3 | Abdul Rahman W. | [@surakartarestaurant](https://github.com/surakartarestaurant) |
 
 ---
 
