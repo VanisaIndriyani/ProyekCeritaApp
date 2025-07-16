@@ -41,6 +41,16 @@ ob_start();
             </div>
         <?php endif; ?>
 
+        <?php if (isset($story) && $story->getStatus() === 'rejected'): ?>
+            <div class="admin-reject-alert">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <b>Cerita ditolak admin.</b><br>
+                    <span>Komentar admin: <span class="admin-reject-comment">"<?= htmlspecialchars($story->getAdminComment()) ?>"</span></span>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <!-- Story Form -->
         <div class="content-card">
             <form method="POST" action="/user/edit/<?= $story->getId() ?>" class="story-form" enctype="multipart/form-data">
@@ -317,6 +327,33 @@ ob_start();
 .text-muted {
     color: #6c757d;
     font-size: 14px;
+}
+
+.admin-reject-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 1em;
+    background: #fff1f2;
+    color: #b91c1c;
+    border: 1.5px solid #fecaca;
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 1.5em;
+    font-size: 1.08em;
+    box-shadow: 0 2px 8px #0001;
+}
+.admin-reject-alert i {
+    font-size: 1.7em;
+    margin-top: 2px;
+}
+.admin-reject-comment {
+    color: #991b1b;
+    font-weight: 600;
+    font-size: 1.08em;
+}
+@media (max-width: 600px) {
+    .admin-reject-alert { flex-direction: column; gap: 0.5em; padding: 12px 10px; font-size: 1em; }
+    .admin-reject-alert i { font-size: 1.3em; }
 }
 
 @media (max-width: 768px) {

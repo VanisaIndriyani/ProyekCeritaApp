@@ -262,3 +262,44 @@ $content = ob_get_clean();
 // Include the layout
 include __DIR__ . '/../layouts/main.php';
 ?>
+
+<style>
+@media print {
+  /* Sembunyikan elemen non-konten utama */
+  header, nav, .navbar, .sidebar, .story-actions, .btn, .btn-primary, .btn-secondary, .btn-outline, .back-to-top, .breadcrumb-link, .story-breadcrumb, .related-stories, .related-container, .related-header, .related-footer, .navigation-actions, .nav-btn, .error-state, .error-actions {
+    display: none !important;
+  }
+  /* Konten utama full width, background putih */
+  body, .main-content, .container, .story-detail-container, .story-content-wrapper, .story-content, .story-body {
+    background: #fff !important;
+    color: #111 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+  /* Perbesar font judul dan isi */
+  .story-title, h1, h2 {
+    font-size: 2em !important;
+    color: #111 !important;
+  }
+  .story-body, .story-content, p {
+    font-size: 1.1em !important;
+    color: #222 !important;
+  }
+  /* Hilangkan link underline */
+  a {
+    text-decoration: none !important;
+    color: #111 !important;
+  }
+  /* Hilangkan box shadow dan border radius */
+  .story-detail-card, .content-card, .story-content-wrapper {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+  /* Atur margin halaman print */
+  @page {
+    margin: 1.5cm;
+  }
+}
+</style>

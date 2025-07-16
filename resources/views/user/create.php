@@ -41,6 +41,13 @@ ob_start();
             </div>
         <?php endif; ?>
 
+        <?php if (isset($story) && $story->getStatus() === 'rejected'): ?>
+            <div class="alert alert-danger" style="margin-bottom:1em;">
+                <b>Cerita ditolak admin.</b><br>
+                Komentar admin: <span style="color:#991b1b;">"<?= htmlspecialchars($story->getAdminComment()) ?>"</span>
+            </div>
+        <?php endif; ?>
+
         <!-- Story Form -->
         <div class="content-card">
             <form method="POST" action="/user/create" class="story-form" enctype="multipart/form-data">

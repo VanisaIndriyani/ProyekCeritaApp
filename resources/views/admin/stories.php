@@ -36,6 +36,7 @@ class Story {
     public function getCategory() { return $this->data['category'] ?? '-'; }
     public function getStatus() { return $this->data['status'] ?? 'draft'; }
     public function getCreatedAt() { return $this->data['created_at'] ?? date('Y-m-d'); }
+    public function getAdminComment() { return $this->data['admin_comment'] ?? ''; }
 }
 
 $stories = array_map(fn($row) => new Story($row), $data);
@@ -70,6 +71,7 @@ ob_start();
                 <option value="pending" <?= $filterStatus === 'pending' ? 'selected' : '' ?>>Pending</option>
                 <option value="published" <?= $filterStatus === 'published' ? 'selected' : '' ?>>Published</option>
                 <option value="draft" <?= $filterStatus === 'draft' ? 'selected' : '' ?>>Draft</option>
+                <option value="rejected" <?= $filterStatus === 'rejected' ? 'selected' : '' ?>>Rejected</option>
             </select>
             <button type="submit" class="btn btn-primary">Cari</button>
         </form>
@@ -96,13 +98,14 @@ ob_start();
                         <th>Penulis</th>
                         <th>Kategori</th>
                         <th>Status</th>
+                        <th>Komentar Admin</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($stories)): ?>
-                        <tr><td colspan="7" style="text-align:center;color:#888;">Tidak ada cerita ditemukan.</td></tr>
+                        <tr><td colspan="8" style="text-align:center;color:#888;">Tidak ada cerita ditemukan.</td></tr>
                     <?php else: foreach ($stories as $story): ?>
                     <tr>
                         <td><?= htmlspecialchars($story->getId()) ?></td>
@@ -110,6 +113,11 @@ ob_start();
                         <td><?= htmlspecialchars($story->getUserName()) ?></td>
                         <td><?= htmlspecialchars($story->getCategory()) ?></td>
                         <td><span class="status-badge status-<?= htmlspecialchars($story->getStatus()) ?>"><?= ucfirst($story->getStatus()) ?></span></td>
+                        <td style="max-width:200px;white-space:pre-line;word-break:break-word;">
+                            <?php if ($story->getStatus() === 'rejected'): ?>
+                                <span style="color:#991b1b;"><b><?= htmlspecialchars($story->getAdminComment()) ?></b></span>
+                            <?php endif; ?>
+                        </td>
                         <td><?= date('d M Y', strtotime($story->getCreatedAt())) ?></td>
                         <td style="display:flex;gap:0.3em;">
                             <?php if ($story->getStatus() === 'pending'): ?>
@@ -117,6 +125,8 @@ ob_start();
                                 <input type="hidden" name="approve_id" value="<?= htmlspecialchars($story->getId()) ?>">
                                 <button type="submit" class="btn-table-action" title="Approve"><i class="fas fa-check"></i></button>
                             </form>
+                            <!-- Reject button triggers modal -->
+                            <button type="button" class="btn-table-action" title="Tolak" onclick="showRejectModal(<?= htmlspecialchars($story->getId()) ?>)"><i class="fas fa-times"></i></button>
                             <?php endif; ?>
                             <a href="/admin/stories/show/<?= htmlspecialchars($story->getId()) ?>" class="btn-table-action" title="Lihat Detail (Admin)" target="_blank"><i class="fas fa-eye"></i></a>
                             <button class="btn-table-action" title="Hapus" onclick="return confirm('Yakin hapus cerita ini?')"><i class="fas fa-trash"></i></button>
@@ -126,6 +136,32 @@ ob_start();
                 </tbody>
             </table>
         </div>
+        <!-- Modal Tolak Cerita -->
+        <div id="rejectModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0005;z-index:9999;align-items:center;justify-content:center;">
+            <form method="post" id="rejectForm" style="background:#fff;padding:2em 2em 1.5em 2em;border-radius:12px;box-shadow:0 4px 24px #0002;max-width:400px;width:100%;display:flex;flex-direction:column;gap:1em;">
+                <input type="hidden" name="reject_id" id="reject_id">
+                <label for="admin_comment"><b>Alasan Penolakan / Komentar Admin:</b></label>
+                <textarea name="admin_comment" id="admin_comment" rows="4" required style="resize:vertical;"></textarea>
+                <div style="display:flex;gap:1em;justify-content:flex-end;">
+                    <button type="button" onclick="hideRejectModal()" class="btn btn-secondary">Batal</button>
+                    <button type="submit" class="btn btn-danger">Tolak Cerita</button>
+                </div>
+            </form>
+        </div>
+        <script>
+        function showRejectModal(storyId) {
+            document.getElementById('reject_id').value = storyId;
+            document.getElementById('admin_comment').value = '';
+            document.getElementById('rejectModal').style.display = 'flex';
+        }
+        function hideRejectModal() {
+            document.getElementById('rejectModal').style.display = 'none';
+        }
+        // Close modal on outside click
+        document.getElementById('rejectModal').addEventListener('click', function(e) {
+            if (e.target === this) hideRejectModal();
+        });
+        </script>
     </div>
 </main>
 <?php

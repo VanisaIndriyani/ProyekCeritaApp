@@ -40,8 +40,25 @@ class AdminController extends BaseController
             $story = $this->storyRepository->findStoryOfId($approveId);
             if ($story) {
                 $story->setStatus('published');
+                $story->setAdminComment(null);
                 $this->storyRepository->update($story);
                 $_SESSION['success'] = 'Cerita berhasil dipublish!';
+            } else {
+                $_SESSION['error'] = 'Cerita tidak ditemukan.';
+            }
+            header('Location: /admin/stories');
+            exit;
+        }
+        // Handle reject (POST)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reject_id'], $_POST['admin_comment'])) {
+            $rejectId = (int)$_POST['reject_id'];
+            $adminComment = trim($_POST['admin_comment']);
+            $story = $this->storyRepository->findStoryOfId($rejectId);
+            if ($story) {
+                $story->setStatus('rejected');
+                $story->setAdminComment($adminComment);
+                $this->storyRepository->update($story);
+                $_SESSION['success'] = 'Cerita berhasil ditolak dengan komentar.';
             } else {
                 $_SESSION['error'] = 'Cerita tidak ditemukan.';
             }

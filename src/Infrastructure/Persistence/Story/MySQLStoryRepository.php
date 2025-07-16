@@ -39,7 +39,7 @@ class MySQLStoryRepository implements StoryRepository
 
     public function create(Story $story): int
     {
-        $stmt = $this->pdo->prepare("INSERT INTO stories (userId, title, content, category, coverImage, createdAt, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $this->pdo->prepare("INSERT INTO stories (userId, title, content, category, coverImage, createdAt, status, admin_comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([
             $story->getUserId(),
             $story->getTitle(),
@@ -47,7 +47,8 @@ class MySQLStoryRepository implements StoryRepository
             $story->getCategory(),
             $story->getCoverImage(),
             $story->getCreatedAt(),
-            $story->getStatus() ?? 'pending'
+            $story->getStatus() ?? 'pending',
+            $story->getAdminComment()
         ]);
         return (int)$this->pdo->lastInsertId();
     }
@@ -61,7 +62,7 @@ class MySQLStoryRepository implements StoryRepository
 
     public function save(Story $story): Story
     {
-        $stmt = $this->pdo->prepare("INSERT INTO stories (userId, title, content, category, coverImage, createdAt, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $this->pdo->prepare("INSERT INTO stories (userId, title, content, category, coverImage, createdAt, status, admin_comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([
             $story->getUserId(),
             $story->getTitle(),
@@ -69,10 +70,11 @@ class MySQLStoryRepository implements StoryRepository
             $story->getCategory(),
             $story->getCoverImage(),
             $story->getCreatedAt(),
-            $story->getStatus() ?? 'pending'
+            $story->getStatus() ?? 'pending',
+            $story->getAdminComment()
         ]);
         $id = (int)$this->pdo->lastInsertId();
-        return new Story($id, $story->getUserId(), $story->getTitle(), $story->getContent(), $story->getCategory(), $story->getCoverImage(), $story->getCreatedAt(), null, $story->getStatus() ?? 'pending');
+        return new Story($id, $story->getUserId(), $story->getTitle(), $story->getContent(), $story->getCategory(), $story->getCoverImage(), $story->getCreatedAt(), null, $story->getStatus() ?? 'pending', null, $story->getAdminComment());
     }
 
     public function update(Story $story): Story
@@ -84,7 +86,8 @@ class MySQLStoryRepository implements StoryRepository
                 category = :category,
                 coverImage = :coverImage,
                 updatedAt = :updatedAt,
-                status = :status
+                status = :status,
+                admin_comment = :admin_comment
             WHERE id = :id
         ");
         $stmt->bindValue(':id', $story->getId(), PDO::PARAM_INT);
@@ -94,6 +97,7 @@ class MySQLStoryRepository implements StoryRepository
         $stmt->bindValue(':coverImage', $story->getCoverImage());
         $stmt->bindValue(':updatedAt', date('Y-m-d H:i:s'));
         $stmt->bindValue(':status', $story->getStatus() ?? 'pending');
+        $stmt->bindValue(':admin_comment', $story->getAdminComment());
         $stmt->execute();
         return $story;
     }
@@ -131,7 +135,8 @@ class MySQLStoryRepository implements StoryRepository
             $row['createdAt'] ?? null,
             $row['updatedAt'] ?? null,
             $row['status'] ?? 'pending',
-            $row['userName'] ?? null
+            $row['userName'] ?? null,
+            $row['admin_comment'] ?? null
         );
     }
 } 

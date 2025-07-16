@@ -358,6 +358,12 @@
                 font-size: 1.2rem;
             }
         }
+
+        @media print {
+            footer, .footer, .site-footer, .bottom-nav, .sidebar, .category-popular, .help-section, .nav, .navbar, .menu, .user-menu, .main-footer, .page-footer, .kategori-populer, .bantuan, .copyright {
+                display: none !important;
+            }
+        }
     </style>
     
     <!-- Page Specific Styles -->

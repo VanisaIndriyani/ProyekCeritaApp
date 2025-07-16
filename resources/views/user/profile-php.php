@@ -64,14 +64,34 @@ ob_start();
         </div>
 
         <!-- Stories Count -->
-        <div class="stats-summary">
-            <div class="stat-item">
-                <span class="stat-number"><?= count($userStories) ?></span>
-                <span class="stat-label">Total Cerita</span>
+        <div class="stats-cards">
+            <div class="stat-card stat-total">
+                <div class="stat-icon"><i class="fas fa-book"></i></div>
+                <div>
+                    <div class="stat-number"><?= count($userStories) ?></div>
+                    <div class="stat-label">Total Cerita</div>
+                </div>
             </div>
-            <div class="stat-item">
-                <span class="stat-number"><?= count(array_filter($userStories, fn($s) => $s->getStatus() === 'published')) ?></span>
-                <span class="stat-label">Dipublikasi</span>
+            <div class="stat-card stat-published">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div>
+                    <div class="stat-number"><?= count(array_filter($userStories, fn($s) => $s->getStatus() === 'published')) ?></div>
+                    <div class="stat-label">Dipublikasi</div>
+                </div>
+            </div>
+            <div class="stat-card stat-pending">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div>
+                    <div class="stat-number"><?= count(array_filter($userStories, fn($s) => $s->getStatus() === 'pending')) ?></div>
+                    <div class="stat-label">Pending</div>
+                </div>
+            </div>
+            <div class="stat-card stat-rejected">
+                <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+                <div>
+                    <div class="stat-number"><?= count(array_filter($userStories, fn($s) => $s->getStatus() === 'rejected')) ?></div>
+                    <div class="stat-label">Ditolak</div>
+                </div>
             </div>
         </div>
 
@@ -129,6 +149,11 @@ ob_start();
                                 <p class="story-excerpt">
                                     <?= htmlspecialchars(substr(strip_tags($story->getContent()), 0, 120)) ?>...
                                 </p>
+                                <?php if ($story->getStatus() === 'rejected' && $story->getAdminComment()): ?>
+                                    <div class="admin-comment-rejected" style="background:#fff1f2;color:#b91c1c;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:0.97em;">
+                                        <b>Komentar Admin:</b> <?= htmlspecialchars($story->getAdminComment()) ?>
+                                    </div>
+                                <?php endif; ?>
                             </div>
 
                             <!-- Story Actions -->
@@ -182,32 +207,58 @@ ob_start();
     border: 1px solid #f5c6cb;
 }
 
-.stats-summary {
+.stats-summary { display:none; }
+.stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1.5em;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+}
+.stat-card {
     display: flex;
-    gap: 20px;
-    margin-bottom: 30px;
-    padding: 20px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    align-items: center;
+    gap: 1em;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px #0001;
+    padding: 1.2em 1.5em;
+    transition: box-shadow 0.2s, transform 0.2s;
+    cursor: pointer;
 }
-
-.stat-item {
-    text-align: center;
+.stat-card:hover {
+    box-shadow: 0 6px 24px #0002;
+    transform: translateY(-2px) scale(1.03);
 }
-
+.stat-icon {
+    font-size: 2.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+.stat-total .stat-icon { background: #e0e7ff; color: #3730a3; }
+.stat-published .stat-icon { background: #d1fae5; color: #065f46; }
+.stat-pending .stat-icon { background: #dbeafe; color: #1e40af; }
+.stat-rejected .stat-icon { background: #fee2e2; color: #991b1b; }
 .stat-number {
-    display: block;
     font-size: 2rem;
     font-weight: bold;
     color: #2563eb;
+    line-height: 1;
 }
-
 .stat-label {
-    display: block;
-    font-size: 0.875rem;
+    font-size: 0.97rem;
     color: #6b7280;
-    margin-top: 4px;
+    margin-top: 2px;
+}
+@media (max-width: 600px) {
+    .stats-cards { grid-template-columns: 1fr 1fr; }
+    .stat-card { padding: 1em; }
+    .stat-icon { font-size: 1.5em; width: 36px; height: 36px; }
+    .stat-number { font-size: 1.3em; }
 }
 
 .stories-grid {
@@ -265,6 +316,7 @@ ob_start();
 .status-draft { background: #fef3c7; color: #92400e; }
 .status-pending { background: #dbeafe; color: #1e40af; }
 .status-rejected { background: #fecaca; color: #991b1b; }
+.admin-comment-rejected { background: #fff1f2; color: #b91c1c; border-radius: 8px; padding: 10px 14px; margin-top: 10px; font-size: 0.97em; }
 
 .story-content {
     padding: 20px;
