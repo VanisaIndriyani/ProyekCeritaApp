@@ -81,7 +81,7 @@ composer start
 | 2 | Vanisa Indriyani | [@VanisaIndriyani](https://github.com/VanisaIndriyani) |
 | 3 | Abdul Rahman W. | [@surakartarestaurant](https://github.com/surakartarestaurant) |
 | 4 | Gede Aryamulya Putra Kumara | [@kaizen-002](https://github.com/kaizen-002) |
-| 5 | Triyas Nurlita Nurul Adha | [(https://github.com/nuruladha1)
+| 5 | Triyas Nurlita Nurul Adha | (https://github.com/nuruladha1)
 
 ---
 
