@@ -5,7 +5,7 @@ $authSubtitle = $authSubtitle ?? 'Selamat datang kembali! Silakan masuk untuk me
 
 ob_start();
 ?>
-<form method="POST" action="/login" class="auth-form">
+<form id="loginForm" method="POST" action="/login" class="auth-form">
     <div class="form-group">
         <label for="username">Username</label>
         <div class="input-with-icon">

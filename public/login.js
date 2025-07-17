@@ -39,11 +39,11 @@ form.onsubmit = async (e) => {
         showNotif('Login berhasil! Redirect...');
         setTimeout(() => {
             if (user.role === 'admin') {
-                window.location.href = 'admin.html';
+                window.location.href = '/admin';
             } else if (user.role === 'user') {
-                window.location.href = 'user.html';
+                window.location.href = '/user';
             } else {
-                window.location.href = 'index.html';
+                window.location.href = '/';
             }
         }, 1200);
     } catch (err) {

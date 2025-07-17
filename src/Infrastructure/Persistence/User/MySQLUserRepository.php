@@ -95,6 +95,29 @@ class MySQLUserRepository implements UserRepository
         return $stmt->rowCount() > 0;
     }
     
+    public function update(int $id, array $data): bool
+    {
+        $fields = [];
+        $params = [];
+        if (isset($data['nama'])) {
+            $fields[] = 'nama = ?';
+            $params[] = $data['nama'];
+        }
+        if (isset($data['email'])) {
+            $fields[] = 'email = ?';
+            $params[] = $data['email'];
+        }
+        if (isset($data['password'])) {
+            $fields[] = 'password_hash = ?';
+            $params[] = $data['password'];
+        }
+        if (empty($fields)) return false;
+        $params[] = $id;
+        $sql = 'UPDATE users SET ' . implode(', ', $fields) . ' WHERE id = ?';
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute($params);
+    }
+    
     private function rowToUser(array $row): User
     {
         return new User(

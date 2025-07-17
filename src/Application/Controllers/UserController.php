@@ -153,11 +153,43 @@ class UserController extends BaseController
         if (!$user) {
             return $this->response->withHeader('Location', '/login')->withStatus(302);
         }
-        extract(['user' => $user]);
+
+        // Proses update profil jika POST
+        if ($this->request->getMethod() === 'POST') {
+            $data = $this->request->getParsedBody();
+            $nama = $data['nama'] ?? $user['nama'];
+            $email = $data['email'] ?? $user['email'];
+            $password = $data['password'] ?? null;
+
+            // Update user di database
+            $userId = $user['id'];
+            $updateData = [
+                'nama' => $nama,
+                'email' => $email
+            ];
+            if (!empty($password)) {
+                $updateData['password'] = password_hash($password, PASSWORD_DEFAULT);
+            }
+            $this->userRepository->update($userId, $updateData);
+
+            // Set notifikasi sukses ke session
+            if (session_status() === PHP_SESSION_NONE) session_start();
+            $_SESSION['profile_success'] = 'Profil berhasil diperbarui!';
+
+            // Redirect agar tidak resubmit form
+            return $this->response->withHeader('Location', '/user/profile')->withStatus(302);
+        }
+
+        // Ambil notifikasi jika ada
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        $notif = $_SESSION['profile_success'] ?? null;
+        unset($_SESSION['profile_success']);
+
+        extract(['user' => $user, 'notif' => $notif]);
         ob_start();
-        $viewPath = realpath(__DIR__ . '/../../../../resources/views/user/profile.php');
-        if (!$viewPath) {
-            die('❌ File view tidak ditemukan: ' . __DIR__ . '/../../../../resources/views/user/profile.php');
+        $viewPath = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'user' . DIRECTORY_SEPARATOR . 'profile.php';
+        if (!file_exists($viewPath)) {
+            die('❌ File view tidak ditemukan: ' . $viewPath);
         }
         include $viewPath;
         $html = ob_get_clean();

@@ -48,14 +48,17 @@ class AuthController extends BaseController
         }
 
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-        $user = new User(null, $username, $nama, $email);
-        $saved = $this->userRepository->save($user, $passwordHash);
-        
+        $userId = $this->userRepository->create([
+            'nama' => $nama,
+            'email' => $email,
+            'username' => $username,
+            'password' => $passwordHash,
+            'role' => 'user'
+        ]);
         $this->logInfo("User registered: $username");
-        
         return $this->respondWithData([
-            'message' => 'Register berhasil', 
-            'user' => $saved
+            'message' => 'Register berhasil',
+            'userId' => $userId
         ], 201);
     }
 

@@ -15,6 +15,17 @@ ob_start();
 ?>
 <main class="main-content" style="background:#f6f8fb; min-height:100vh;">
     <div class="container" style="max-width:500px; margin:auto; padding:2em 0;">
+        <?php if (!empty($notif)): ?>
+            <div id="notif-success" style="background:#d1fae5;color:#065f46;padding:1em 1.2em;border-radius:8px;margin-bottom:1.2em;font-weight:600;box-shadow:0 2px 8px #0001;">
+                <i class="fas fa-check-circle"></i> <?= htmlspecialchars($notif) ?>
+            </div>
+            <script>
+                setTimeout(function() {
+                    var notif = document.getElementById('notif-success');
+                    if (notif) notif.style.display = 'none';
+                }, 2500);
+            </script>
+        <?php endif; ?>
         <div class="profile-header" style="margin-bottom:2em; text-align:center;">
             <h1 style="font-size:2em; font-weight:700; color:#3b3b99; margin-bottom:0.2em;">Pengaturan Profil</h1>
             <p style="color:#666;">Edit data profil akun Anda di bawah ini.</p>

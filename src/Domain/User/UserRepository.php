@@ -32,4 +32,9 @@ interface UserRepository
      * Create new user
      */
     public function create(array $userData): int;
+
+    /**
+     * Update user data by id
+     */
+    public function update(int $id, array $data): bool;
 }
