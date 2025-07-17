@@ -23,6 +23,12 @@ ob_start();
     </div>
     
     <div class="form-group">
+        <div style="text-align: right; margin-bottom: 0.5rem;">
+            <a href="/forgot-password" style="font-size: 0.9rem; color: #667eea; text-decoration: none;">
+                Lupa password?
+            </a>
+        </div>
+
         <div style="display: flex; align-items: center; justify-content: space-between; margin: 0.5rem 0;">
             <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: normal; margin: 0;">
                 <input type="checkbox" id="remember" name="remember" style="margin: 0;">

@@ -87,6 +87,14 @@ class MySQLUserRepository implements UserRepository
         return null;
     }
 
+    public function saveResetToken(int $userId, string $token, string $expires): bool
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET reset_token = ?, reset_expires = ? WHERE id = ?");
+        $stmt->execute([$token, $expires, $userId]);
+
+        return $stmt->rowCount() > 0;
+    }
+    
     private function rowToUser(array $row): User
     {
         return new User(

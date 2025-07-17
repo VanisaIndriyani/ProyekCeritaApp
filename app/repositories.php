@@ -30,6 +30,9 @@ return function (ContainerBuilder $containerBuilder) {
         UserRepository::class => \DI\autowire(MySQLUserRepository::class),
         StoryRepository::class => \DI\autowire(MySQLStoryRepository::class),
         FlashMessage::class => \DI\autowire(FlashMessage::class),
+        PDO::class => function () {
+            return new PDO('mysql:host=localhost;dbname=cerita_app', 'root', '');
+        },
         
         // Controllers
         HomeController::class => \DI\autowire(HomeController::class),

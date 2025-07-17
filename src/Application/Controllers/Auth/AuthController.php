@@ -7,17 +7,21 @@ namespace App\Application\Controllers\Auth;
 use App\Application\Controllers\BaseController;
 use App\Domain\User\User;
 use App\Domain\User\UserRepository;
+use App\Utils\MailHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
+use PDO;
 
 class AuthController extends BaseController
 {
     private UserRepository $userRepository;
+    private PDO $pdo;
 
-    public function __construct(LoggerInterface $logger, UserRepository $userRepository)
+    public function __construct(LoggerInterface $logger, UserRepository $userRepository, PDO $pdo)
     {
         parent::__construct($logger);
         $this->userRepository = $userRepository;
+        $this->pdo = $pdo;
     }
 
     /**
@@ -92,6 +96,96 @@ class AuthController extends BaseController
                          (property_exists($user, 'role') ? $user->role : 'user'),
             ]
         ]);
+    }
+
+
+    /**
+     * Handle Forgot Password
+     */
+    public function forgotPassword($request, $response, $args)
+    {
+        $data = $request->getParsedBody();
+        $email = $data['email'] ?? null;
+
+        if (!$email) {
+            $response->getBody()->write(json_encode([
+                'message' => 'Email harus diisi.'
+            ]));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+
+        $user = $this->userRepository->findByEmail($email);
+        if (!$user) {
+            $response->getBody()->write(json_encode([
+                'message' => 'Email tidak ditemukan.'
+            ]));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
+        }
+
+        $token = bin2hex(random_bytes(32));
+        $expires = date('Y-m-d H:i:s', strtotime('+1 hour'));
+
+        $this->userRepository->saveResetToken($user->getId(), $token, $expires);
+
+        $resetUrl = "http://localhost:8080/reset-password?token={$token}";
+
+        $sendMail = \App\Utils\MailHelper::sendResetLink($user->getEmail(), $resetUrl);
+
+        if (!$sendMail) {
+            $response->getBody()->write(json_encode([
+                'message' => 'Gagal mengirim email reset password.'
+            ]));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
+        }
+
+        $response->getBody()->write(json_encode([
+            'message' => 'Link reset password berhasil dikirim ke email!',
+        ]));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    }
+
+    /**
+     * Handle Reset Password
+     */
+    public function resetPassword($request, $response, $args)
+    {
+        $data = $request->getParsedBody();
+        $token = $data['token'] ?? null;
+        $newPassword = $data['password'] ?? null;
+
+        if (!$token || !$newPassword) {
+            $response->getBody()->write(json_encode([
+                'message' => 'Token dan password wajib diisi.'
+            ]));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE reset_token = ?");
+        $stmt->execute([$token]);
+        $userRow = $stmt->fetch();
+
+        if (!$userRow) {
+            $response->getBody()->write(json_encode([
+                'message' => 'Token tidak valid.'
+            ]));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
+        }
+
+        if (strtotime($userRow['reset_expires']) < time()) {
+            $response->getBody()->write(json_encode([
+                'message' => 'Token sudah kadaluarsa.'
+            ]));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+
+        $hashed = password_hash($newPassword, PASSWORD_DEFAULT);
+        $updateStmt = $this->pdo->prepare("UPDATE users SET password_hash = ?, reset_token = NULL, reset_expires = NULL WHERE id = ?");
+        $updateStmt->execute([$hashed, $userRow['id']]);
+
+        $response->getBody()->write(json_encode([
+            'message' => 'Password berhasil direset.'
+        ]));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     }
 
     protected function action(): Response

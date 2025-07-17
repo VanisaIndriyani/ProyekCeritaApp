@@ -38,7 +38,42 @@ return function (\Slim\App $app) {
         // Process login/register forms
         $group->post('/login', [AuthWebController::class, 'processLogin']);
         $group->post('/register', [AuthWebController::class, 'processRegister']);
+
+        $group->get('/forgot-password', function (Request $request, Response $response) {
+        $viewFile = __DIR__ . '/../../resources/views/auth/forgot-password.php';
+        if (file_exists($viewFile)) {
+            ob_start();
+            include $viewFile;
+            $html = ob_get_clean();
+            $response->getBody()->write($html);
+            return $response->withHeader('Content-Type', 'text/html');
+        }
+        $response->getBody()->write('<h2>Halaman lupa password tidak ditemukan.</h2>');
+        return $response->withHeader('Content-Type', 'text/html');
+        });
     })->add(GuestMiddleware::class);
+
+    $app->get('/reset-password', function (Request $request, Response $response) {
+    $token = $request->getQueryParams()['token'] ?? null;
+
+    if (!$token) {
+        $response->getBody()->write('<h2>Token tidak valid.</h2>');
+        return $response->withHeader('Content-Type', 'text/html')->withStatus(400);
+    }
+
+    $viewFile = __DIR__ . '/../../resources/views/auth/reset-password.php';
+    if (file_exists($viewFile)) {
+        ob_start();
+        $resetToken = $token;
+        include $viewFile;
+        $html = ob_get_clean();
+        $response->getBody()->write($html);
+        return $response->withHeader('Content-Type', 'text/html')->withStatus(200);
+    }
+
+    $response->getBody()->write('<h2>Halaman reset password tidak ditemukan.</h2>');
+    return $response->withHeader('Content-Type', 'text/html')->withStatus(404);
+    });
     
     // Logout handling
     // Note: Using direct logout.php for full PHP session handling instead of Slim routes

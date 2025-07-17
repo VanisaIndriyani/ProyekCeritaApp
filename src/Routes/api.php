@@ -15,6 +15,8 @@ return function (\Slim\App $app) {
     $app->group('/api/auth', function (Group $group) {
         $group->post('/register', [AuthController::class, 'register']);
         $group->post('/login', [AuthController::class, 'login']);
+        $group->post('/forgot-password', [AuthController::class, 'forgotPassword']);
+        $group->post('/reset-password', [AuthController::class, 'resetPassword']);
     });
 
     // Public API Routes (No authentication required for reading)
