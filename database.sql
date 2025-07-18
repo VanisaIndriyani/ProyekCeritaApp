@@ -1,52 +1,154 @@
--- Struktur tabel users
-CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
-    nama VARCHAR(100),
-    email VARCHAR(100),
-    role VARCHAR(20) DEFAULT 'user',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Jul 18, 2025 at 11:09 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 
-INSERT INTO users (username, password_hash, nama, email, role) VALUES
-('admin', '$2y$10$clCyEKorqDRB97NAC1Adzugcxh1te5VQNcmCq.eMV7jnreSP7fTZC', 'Admin', 'admin@email.com', 'admin');
-INSERT INTO users (username, password_hash, nama, email, role) VALUES
-('user1', '$2y$10$KllD9/azBpFSuzVBSGD9C.PtYTmabeEXpuTPHQN4o0NTXsO/Oerwa', 'User Satu', 'user1@email.com', 'user');
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
--- user 
--- user123
--- admin
--- admin123
+--
+-- Database: `cerita_app`
+--
 
+-- --------------------------------------------------------
 
--- Struktur tabel stories
-CREATE TABLE IF NOT EXISTS stories (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    userId INT NOT NULL,
-    title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
-    category VARCHAR(50),
-    coverImage VARCHAR(255),
-    status VARCHAR(20) DEFAULT 'published',
-    admin_comment TEXT NULL,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
-); 
+--
+-- Table structure for table `stories`
+--
 
--- Sample stories data
-INSERT INTO stories (userId, title, content, category, status, createdAt) VALUES
-(2, 'Perjuangan Skripsi di Tengah Pandemi', 'Menghadapi skripsi saat pandemi memang penuh tantangan. Tapi aku belajar banyak tentang manajemen waktu dan mental. Dari yang awalnya bingung mau mulai dari mana, hingga akhirnya bisa menyelesaikan dengan baik. Prosesnya memang tidak mudah, tapi pengalaman ini mengajarkan banyak hal berharga tentang kedisiplinan dan konsistensi.', 'akademik', 'published', '2024-01-15 10:30:00'),
-(2, 'Tips Mendapat Magang Impian', 'Dari ratusan lamaran, akhirnya aku diterima magang di perusahaan impian. Ini tips yang bisa diterapkan untuk meningkatkan peluang diterima magang. Pertama, riset mendalam tentang perusahaan. Kedua, sesuaikan CV dengan job description. Ketiga, latih soft skill terutama komunikasi.', 'karir', 'published', '2024-01-10 14:20:00'),
-(2, 'Pengalaman Organisasi Kemahasiswaan', 'Bagaimana organisasi mengubah hidupku? Dari yang pemalu jadi lebih percaya diri dan punya banyak teman. Leadership skill juga berkembang pesat. Mulai dari event organizer kecil-kecilan sampai memimpin divisi dengan puluhan anggota.', 'kehidupan', 'published', '2024-01-05 09:15:00'),
-(2, 'Belajar Programming dari Nol', 'Journey belajar programming memang penuh lika-liku. Mulai dari HTML, CSS, JavaScript, hingga framework modern. Yang penting konsisten latihan coding setiap hari dan jangan takut untuk bertanya atau mencari bantuan di komunitas developer.', 'teknologi', 'published', '2024-01-12 16:45:00'); 
+CREATE TABLE `stories` (
+  `id` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `category` varchar(50) DEFAULT NULL,
+  `coverImage` varchar(255) DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL,
+  `status` varchar(20) DEFAULT 'draft',
+  `admin_comment` text DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Tabel untuk data tim admin
-CREATE TABLE IF NOT EXISTS team (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nama VARCHAR(100) NOT NULL,
-    jabatan VARCHAR(100) NOT NULL,
-    foto VARCHAR(255) DEFAULT NULL
-); 
+--
+-- Dumping data for table `stories`
+--
+
+INSERT INTO `stories` (`id`, `userId`, `title`, `content`, `category`, `coverImage`, `createdAt`, `updatedAt`, `status`, `admin_comment`, `created_at`) VALUES
+(9, 2, 'Pengalaman Magang di Startup', 'Magang di startup membuat saya belajar banyak hal baru, mulai dari kerja tim, manajemen waktu, hingga coding real project. Walau awalnya gugup, akhirnya saya bisa beradaptasi dan mendapat banyak teman baru.', 'Karir', NULL, NULL, NULL, 'published', NULL, '2024-07-05 14:30:00'),
+(11, 1, 'Tips Bertahan Hidup di Kost', 'Hidup di kost jauh dari orang tua mengajarkan saya mandiri. Mulai dari masak sendiri, atur keuangan, sampai cari teman baru. Semua pengalaman ini bikin saya lebih dewasa.', 'Kehidupan', NULL, NULL, NULL, 'published', NULL, '2024-07-12 18:00:00'),
+(12, 2, 'Lolos Beasiswa ke Luar Negeri', 'Saya tidak menyangka bisa lolos beasiswa ke Jepang! Prosesnya panjang, mulai dari seleksi berkas, wawancara, hingga tes bahasa. Tapi semua terbayar saat akhirnya saya berangkat ke Tokyo.', 'Prestasi', NULL, NULL, NULL, 'published', NULL, '2024-07-15 08:45:00'),
+(14, 6, 'cerita mahasiswa ', 'ini cerita teknologi sistem informasi', 'teknologi', '5c6b7fb8a6f7734e.jpeg', '2025-07-17 10:27:26', '2025-07-17 10:28:22', 'published', NULL, '2025-07-17 15:27:26');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `team`
+--
+
+CREATE TABLE `team` (
+  `id` int(11) NOT NULL,
+  `nama` varchar(100) NOT NULL,
+  `jabatan` varchar(100) NOT NULL,
+  `foto` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `team`
+--
+
+INSERT INTO `team` (`id`, `nama`, `jabatan`, `foto`) VALUES
+(1, 'Vanisa Indriyanidshksj', 'Anggota', ''),
+(2, 'Triyas Nurilita Nurul Adha', 'Anggota', NULL),
+(3, 'Gede Aryamulya Putra Kumara', 'Anggota', NULL),
+(4, 'Khairunnnas', 'Anggota', NULL),
+(5, 'Abdul Rahman Wahid', 'Anggota', NULL),
+(6, 'Bagus Nur Sulaiman', 'Anggota', NULL),
+(10, 'tata azzani', 'ketua', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `nama` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `role` varchar(20) DEFAULT 'user',
+  `created_at` datetime DEFAULT current_timestamp(),
+  `reset_token` varchar(255) DEFAULT NULL,
+  `reset_expires` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password_hash`, `nama`, `email`, `role`, `created_at`, `reset_token`, `reset_expires`) VALUES
+(5, 'admin', '$2y$10$clCyEKorqDRB97NAC1Adzugcxh1te5VQNcmCq.eMV7jnreSP7fTZC', 'Admin', 'admin@email.com', 'admin', '2025-07-09 10:21:00', NULL, NULL),
+(6, 'user1', '$2y$10$KllD9/azBpFSuzVBSGD9C.PtYTmabeEXpuTPHQN4o0NTXsO/Oerwa', 'User Satu', 'user1@email.com', 'user', '2025-07-09 10:21:00', NULL, NULL);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `stories`
+--
+ALTER TABLE `stories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `team`
+--
+ALTER TABLE `team`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `stories`
+--
+ALTER TABLE `stories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `team`
+--
+ALTER TABLE `team`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
