@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b0e9072a162b5d54f2d6cac1992b0460",
+    "content-hash": "17f422c4fb686c7f2872b434ef016ea5",
     "packages": [
         {
             "name": "catfan/medoo",
-            "version": "v2.2.0",
+            "version": "v2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/catfan/Medoo.git",
-                "reference": "347515fe63339387738c5c1c93d1d6726cc9774a"
+                "reference": "54fbd8f509329c287600db05e10e4b3a7562b9d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/catfan/Medoo/zipball/347515fe63339387738c5c1c93d1d6726cc9774a",
-                "reference": "347515fe63339387738c5c1c93d1d6726cc9774a",
+                "url": "https://api.github.com/repos/catfan/Medoo/zipball/54fbd8f509329c287600db05e10e4b3a7562b9d0",
+                "reference": "54fbd8f509329c287600db05e10e4b3a7562b9d0",
                 "shasum": ""
             },
             "require": {
@@ -25,7 +25,8 @@
                 "php": ">=7.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.0"
+                "phpstan/phpstan": "^2.2",
+                "phpunit/phpunit": "^13"
             },
             "suggest": {
                 "ext-pdo_dblib": "For MSSQL or Sybase database on Linux/UNIX platform",
@@ -80,7 +81,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2025-03-31T07:37:23+00:00"
+            "time": "2026-10-19T07:51:04+00:00"
         },
         {
             "name": "fig/http-message-util",
@@ -3710,5 +3711,5 @@
         "ext-json": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
